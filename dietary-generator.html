@@ -1,0 +1,1394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heirloom Kitchen - Dietary Properties</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Lato:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Rustic Cookbook Palette - Burgundy/Wine Theme */
+            --bg-primary: #F5F2EB;
+            --bg-secondary: #FFFFFF;
+            --bg-tertiary: #FAF8F5;
+            --bg-hover: #F0EDE6;
+            --border-primary: #E0DCD5;
+            --border-secondary: #D4CFC6;
+            --text-primary: #3E3B39;
+            --text-secondary: #6B6560;
+            --text-muted: #9A9590;
+            --accent-primary: #8B2635;           /* Deep Burgundy */
+            --accent-primary-light: #A43D4F;     /* Lighter Burgundy */
+            --accent-secondary: #C65D3B;         /* Terracotta */
+            --accent-gold: #B8860B;              /* Dark Goldenrod */
+            --accent-cream: #DEB887;             /* Burlywood */
+            --accent-red: #8B4513;               /* Saddle Brown */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.7;
+            /* Dotted paper texture */
+            background-image: radial-gradient(var(--border-primary) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2.5rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px double var(--border-primary);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--accent-primary);
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            color: var(--accent-secondary);
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .panel {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+        }
+
+        .panel-header {
+            background: var(--bg-tertiary);
+            padding: 1.25rem 1.75rem;
+            border-bottom: 2px solid var(--accent-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .panel-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .panel-body {
+            padding: 2rem;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 0;
+            background: var(--bg-secondary);
+            border-bottom: 2px solid var(--border-primary);
+            overflow: hidden;
+        }
+
+        .tab {
+            padding: 1.25rem 2rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            border: none;
+            background: transparent;
+            border-bottom: 3px solid transparent;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .tab:hover {
+            color: var(--accent-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .tab.active {
+            color: var(--accent-primary);
+            background: var(--bg-tertiary);
+            border-bottom-color: var(--accent-primary);
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-family: 'Lato', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            background: var(--bg-secondary);
+            box-shadow: 0 0 0 3px rgba(139, 38, 53, 0.1);
+        }
+
+        input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--bg-tertiary);
+            padding: 1rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-primary);
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-primary);
+            cursor: pointer;
+        }
+
+        .checkbox-group span {
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .btn {
+            padding: 0.85rem 1.75rem;
+            border-radius: 4px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-primary-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(139, 38, 53, 0.25);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-secondary);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-secondary);
+            color: var(--accent-secondary);
+            background: rgba(198, 93, 59, 0.05);
+        }
+
+        .btn-danger {
+            background: transparent;
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+        }
+
+        .btn-danger:hover {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-bar {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .diet-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .diet-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .diet-list::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+            border-radius: 3px;
+        }
+
+        .diet-list::-webkit-scrollbar-thumb {
+            background: var(--border-primary);
+            border-radius: 3px;
+        }
+
+        .diet-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-left: 4px solid var(--accent-cream);
+            border-radius: 6px;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .diet-card:hover {
+            border-left-color: var(--accent-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+            background: var(--bg-secondary);
+        }
+
+        .diet-card.active {
+            border-left-color: var(--accent-primary);
+            background: var(--bg-secondary);
+        }
+
+        .diet-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+            border: 2px solid var(--border-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .diet-info {
+            flex: 1;
+        }
+
+        .diet-name {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            font-size: 1.05rem;
+        }
+
+        .diet-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .diet-actions {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .json-preview {
+            background: #2D2D2D;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            overflow: auto;
+            max-height: 600px;
+        }
+
+        .json-preview pre {
+            padding: 1.5rem;
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: #E6E6E6;
+        }
+
+        .json-key { color: #C678DD; }
+        .json-string { color: #98C379; }
+        .json-number { color: #D19A66; }
+        .json-boolean { color: #61AFEF; }
+        .json-null { color: #888; }
+
+        .tags-container {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: 4px;
+            padding: 0.75rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            min-height: 56px;
+        }
+
+        .tags-container:focus-within {
+            border-color: var(--accent-primary);
+            background: var(--bg-secondary);
+            box-shadow: 0 0 0 3px rgba(139, 38, 53, 0.1);
+        }
+
+        .tag {
+            background: var(--accent-primary);
+            color: white;
+            padding: 0.35rem 0.65rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .tag.vanilla {
+            background: var(--accent-gold);
+        }
+
+        .tag.custom {
+            background: var(--accent-secondary);
+        }
+
+        .tag .mc-icon {
+            width: 16px;
+            height: 16px;
+            image-rendering: pixelated;
+            flex-shrink: 0;
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            opacity: 0.7;
+            font-weight: bold;
+        }
+
+        .tag-remove:hover {
+            opacity: 1;
+        }
+
+        .tags-input {
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            font-family: 'Lato', sans-serif;
+            font-size: 0.875rem;
+            flex: 1;
+            min-width: 120px;
+            padding: 0.25rem;
+        }
+
+        .tags-input:focus {
+            outline: none;
+        }
+
+        .section {
+            border: 1px solid var(--border-primary);
+            border-left: 3px solid var(--accent-cream);
+            border-radius: 4px;
+            margin-bottom: 1.25rem;
+            overflow: hidden;
+            background: var(--bg-tertiary);
+        }
+
+        .section:hover {
+            border-left-color: var(--accent-primary);
+        }
+
+        .section-header {
+            background: var(--bg-secondary);
+            padding: 1rem 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .section-header:hover {
+            background: var(--bg-hover);
+            color: var(--accent-primary);
+        }
+
+        .section-header .chevron {
+            transition: transform 0.2s ease;
+            color: var(--text-muted);
+        }
+
+        .section-header.collapsed .chevron {
+            transform: rotate(-90deg);
+        }
+
+        .section-content {
+            padding: 1.5rem;
+            display: block;
+            background: var(--bg-secondary);
+        }
+
+        .section-content.hidden {
+            display: none;
+        }
+
+        .tab-content.hidden {
+            display: none;
+        }
+
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+
+        .toast {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-top: 0.5rem;
+            box-shadow: var(--shadow-lg);
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast.success {
+            border-color: var(--accent-green);
+        }
+
+        .toast.error {
+            border-color: var(--accent-red);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.4;
+        }
+
+        .empty-state p {
+            font-family: 'Playfair Display', Georgia, serif;
+            color: var(--text-secondary);
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        .color-preview {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .json-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .mc-colors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.25rem;
+            margin-top: 0.5rem;
+        }
+
+        .mc-color-btn {
+            width: 28px;
+            height: 28px;
+            border: 1px solid var(--border-primary);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.1s;
+        }
+
+        .mc-color-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Additional Styles */
+        h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--accent-primary);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-secondary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* Selection highlight */
+        ::selection {
+            background: rgba(139, 38, 53, 0.3);
+            color: var(--text-primary);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🥗 Heirloom Kitchen</h1>
+            <p class="subtitle">Dietary Properties Studio</p>
+        </header>
+
+        <div class="main-grid">
+            <div class="panel">
+                <div class="tabs">
+                    <button class="tab active" data-tab="diets">🏷️ Diets</button>
+                    <button class="tab" data-tab="settings">⚙️ Display Settings</button>
+                </div>
+
+                <!-- Diets Tab -->
+                <div class="panel-body tab-content" id="diets-tab">
+                    <div class="action-bar" style="margin-bottom: 1rem;">
+                        <button class="btn btn-primary" onclick="addNewDiet()">
+                            <span>+</span> Add Diet
+                        </button>
+                        <div class="file-input-wrapper">
+                            <button class="btn btn-secondary">📁 Import JSON</button>
+                            <input type="file" accept=".json" onchange="importJSON(event)">
+                        </div>
+                    </div>
+                    
+                    <div class="diet-list" id="diet-list"></div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div class="panel-body tab-content hidden" id="settings-tab">
+                    <div class="section">
+                        <div class="section-header" onclick="toggleSection(this)">
+                            <span>📜 Lore Settings</span>
+                            <span class="chevron">▼</span>
+                        </div>
+                        <div class="section-content">
+                            <div class="form-group">
+                                <label class="checkbox-group">
+                                    <input type="checkbox" id="lore_show_in_lore" checked onchange="updateJSONPreview()">
+                                    <span>Show diet info in item lore</span>
+                                </label>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Lore Format</label>
+                                    <select id="lore_format" onchange="updateJSONPreview()">
+                                        <option value="single_line">Single Line</option>
+                                        <option value="multi_line">Multi Line</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Prefix</label>
+                                    <input type="text" id="lore_prefix" value="§7Diet: " onchange="updateJSONPreview()">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Separator</label>
+                                    <input type="text" id="lore_separator" value=" " onchange="updateJSONPreview()">
+                                </div>
+                                <div class="form-group">
+                                    <label class="checkbox-group">
+                                        <input type="checkbox" id="lore_show_violations" onchange="updateJSONPreview()">
+                                        <span>Show violations</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-header" onclick="toggleSection(this)">
+                            <span>📦 Contains Settings</span>
+                            <span class="chevron">▼</span>
+                        </div>
+                        <div class="section-content">
+                            <div class="form-group">
+                                <label class="checkbox-group">
+                                    <input type="checkbox" id="contains_show_in_lore" checked onchange="updateJSONPreview()">
+                                    <span>Show contains info in item lore</span>
+                                </label>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Prefix</label>
+                                    <input type="text" id="contains_prefix" value="§7Contains: " onchange="updateJSONPreview()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Separator</label>
+                                    <input type="text" id="contains_separator" value=", " onchange="updateJSONPreview()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JSON Preview Panel -->
+            <div class="panel">
+                <div class="panel-header json-header">
+                    <div class="panel-title">📄 JSON Output</div>
+                    <div class="action-bar">
+                        <button class="btn btn-secondary btn-sm" onclick="copyJSON()">📋 Copy</button>
+                        <button class="btn btn-primary btn-sm" onclick="downloadJSON()">⬇️ Download</button>
+                    </div>
+                </div>
+                <div class="json-preview">
+                    <pre id="json-output"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Diet Editor Modal -->
+    <div id="diet-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; overflow-y: auto; padding: 2rem;">
+        <div class="panel" style="max-width: 700px; margin: 0 auto;">
+            <div class="panel-header">
+                <div class="panel-title" id="modal-title">Edit Diet</div>
+                <button class="btn btn-icon btn-secondary" onclick="closeModal()">✕</button>
+            </div>
+            <div class="panel-body" id="diet-editor-content"></div>
+            <div style="padding: 1rem 1.5rem; border-top: 1px solid var(--border-primary); display: flex; justify-content: flex-end; gap: 0.75rem;">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveDiet()">Save Diet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>
+        // Minecraft color codes
+        const MC_COLORS = {
+            '§0': { name: 'Black', color: '#000000' },
+            '§1': { name: 'Dark Blue', color: '#0000AA' },
+            '§2': { name: 'Dark Green', color: '#00AA00' },
+            '§3': { name: 'Dark Aqua', color: '#00AAAA' },
+            '§4': { name: 'Dark Red', color: '#AA0000' },
+            '§5': { name: 'Dark Purple', color: '#AA00AA' },
+            '§6': { name: 'Gold', color: '#FFAA00' },
+            '§7': { name: 'Gray', color: '#AAAAAA' },
+            '§8': { name: 'Dark Gray', color: '#555555' },
+            '§9': { name: 'Blue', color: '#5555FF' },
+            '§a': { name: 'Green', color: '#55FF55' },
+            '§b': { name: 'Aqua', color: '#55FFFF' },
+            '§c': { name: 'Red', color: '#FF5555' },
+            '§d': { name: 'Light Purple', color: '#FF55FF' },
+            '§e': { name: 'Yellow', color: '#FFFF55' },
+            '§f': { name: 'White', color: '#FFFFFF' }
+        };
+
+        // Diet icons
+        const DIET_ICONS = [
+            // Vegan/Vegetarian
+            '🌱', '🥬', '🌿', '🥗', '🥕', '🍎', '🥑',
+            // Religious
+            '☪️', '✡️', '🕉️', '☸️', '✝️',
+            // Allergens/Restrictions
+            '🌾', '🥛', '🥜', '🦐', '🐟', '🥩', '🧀', '🍳', '🐷', '🐄',
+            // Other
+            '🚫', '⚠️', '💚', '♻️', '🔥', '❄️', '🧈', '🍯'
+        ];
+
+        // Minecraft item icon URL helper - using InventivetalentDev's GitHub assets
+        function getMcItemIcon(itemName) {
+            const name = itemName.toLowerCase();
+            return `https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.4/assets/minecraft/textures/item/${name}.png`;
+        }
+
+        // Create item tag HTML with icon
+        function createItemTagHTML(itemName, tagClass, containerId) {
+            const iconUrl = getMcItemIcon(itemName);
+            return `<img class="mc-icon" src="${iconUrl}" onerror="this.style.display='none'" alt="">${itemName}<span class="tag-remove" onclick="removeTag(this, '${containerId}')">×</span>`;
+        }
+
+        // State - Pre-loaded with existing dietary properties
+        let diets = {
+            "VEGAN": {
+                "display_name": "§aVegan",
+                "display_icon": "🌱",
+                "description": "Contains no animal products",
+                "implies": ["VEGETARIAN"],
+                "violators": {
+                    "items": [
+                        "EGG", "MILK_BUCKET",
+                        "BEEF", "COOKED_BEEF",
+                        "PORKCHOP", "COOKED_PORKCHOP",
+                        "CHICKEN", "COOKED_CHICKEN",
+                        "MUTTON", "COOKED_MUTTON",
+                        "RABBIT", "COOKED_RABBIT",
+                        "COD", "COOKED_COD",
+                        "SALMON", "COOKED_SALMON",
+                        "TROPICAL_FISH", "PUFFERFISH",
+                        "RABBIT_STEW",
+                        "HONEY_BOTTLE", "HONEYCOMB"
+                    ],
+                    "custom_items": [
+                        "CHEESE", "BACON", "MINCED_MEAT", "HEAVY_CREAM", "FRIED_EGG"
+                    ]
+                }
+            },
+            "VEGETARIAN": {
+                "display_name": "§2Vegetarian",
+                "display_icon": "🥬",
+                "description": "Contains no meat or fish",
+                "violators": {
+                    "items": [
+                        "BEEF", "COOKED_BEEF",
+                        "PORKCHOP", "COOKED_PORKCHOP",
+                        "CHICKEN", "COOKED_CHICKEN",
+                        "MUTTON", "COOKED_MUTTON",
+                        "RABBIT", "COOKED_RABBIT",
+                        "COD", "COOKED_COD",
+                        "SALMON", "COOKED_SALMON",
+                        "TROPICAL_FISH", "PUFFERFISH",
+                        "RABBIT_STEW"
+                    ],
+                    "custom_items": [
+                        "BACON", "MINCED_MEAT"
+                    ]
+                }
+            },
+            "GLUTEN_FREE": {
+                "display_name": "§bGluten-Free",
+                "display_icon": "🌾",
+                "description": "Contains no gluten",
+                "violators": {
+                    "items": [
+                        "WHEAT", "WHEAT_SEEDS",
+                        "BREAD", "COOKIE", "CAKE", "PUMPKIN_PIE"
+                    ],
+                    "custom_items": [
+                        "DOUGH", "BAG_OF_FLOUR", "BREAD"
+                    ]
+                }
+            }
+        };
+
+        let hierarchyRules = {
+            "VEGAN": ["VEGETARIAN"]
+        };
+
+        let editingDietKey = null;
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initTabs();
+            renderDietsList();
+            updateJSONPreview();
+        });
+
+        // Tab switching
+        function initTabs() {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+                    tab.classList.add('active');
+                    document.getElementById(`${tab.dataset.tab}-tab`).classList.remove('hidden');
+                });
+            });
+        }
+
+        // Toggle section
+        function toggleSection(header) {
+            header.classList.toggle('collapsed');
+            header.nextElementSibling.classList.toggle('hidden');
+        }
+
+        // Render diets list
+        function renderDietsList() {
+            const container = document.getElementById('diet-list');
+            const dietKeys = Object.keys(diets);
+            
+            if (dietKeys.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🥗</div>
+                        <p>No dietary properties defined</p>
+                        <p style="font-size: 0.875rem;">Click "Add Diet" to create one</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = dietKeys.map(key => {
+                const diet = diets[key];
+                const colorCode = diet.display_name.match(/§[0-9a-f]/)?.[0] || '§f';
+                const bgColor = MC_COLORS[colorCode]?.color || '#FFFFFF';
+                const cleanName = diet.display_name.replace(/§[0-9a-fk-or]/gi, '');
+                
+                return `
+                    <div class="diet-card" onclick="editDiet('${key}')">
+                        <div class="diet-icon">${diet.display_icon || '🏷️'}</div>
+                        <div class="diet-info">
+                            <div class="diet-name" style="color: ${bgColor}">${cleanName}</div>
+                            <div class="diet-desc">${diet.description || 'No description'}</div>
+                        </div>
+                        <div class="diet-actions">
+                            <button class="btn btn-icon btn-secondary" onclick="event.stopPropagation(); duplicateDiet('${key}')" title="Duplicate">📋</button>
+                            <button class="btn btn-icon btn-danger" onclick="event.stopPropagation(); deleteDiet('${key}')" title="Delete">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Add new diet
+        function addNewDiet() {
+            editingDietKey = null;
+            openDietEditor({
+                display_name: "§fNew Diet",
+                display_icon: "🏷️",
+                description: "",
+                implies: [],
+                violators: {
+                    items: [],
+                    custom_items: []
+                }
+            }, null);
+        }
+
+        // Edit existing diet
+        function editDiet(key) {
+            editingDietKey = key;
+            openDietEditor({ ...diets[key] }, key);
+        }
+
+        // Duplicate diet
+        function duplicateDiet(key) {
+            const copy = JSON.parse(JSON.stringify(diets[key]));
+            const newKey = key + "_COPY";
+            diets[newKey] = copy;
+            renderDietsList();
+            updateJSONPreview();
+            showToast('Diet duplicated!', 'success');
+        }
+
+        // Delete diet
+        function deleteDiet(key) {
+            if (confirm(`Delete "${key}" diet?`)) {
+                delete diets[key];
+                // Also remove from hierarchy rules
+                delete hierarchyRules[key];
+                Object.keys(hierarchyRules).forEach(k => {
+                    hierarchyRules[k] = hierarchyRules[k].filter(v => v !== key);
+                    if (hierarchyRules[k].length === 0) delete hierarchyRules[k];
+                });
+                renderDietsList();
+                updateJSONPreview();
+                showToast('Diet deleted', 'success');
+            }
+        }
+
+        // Open diet editor modal
+        function openDietEditor(diet, key) {
+            document.getElementById('modal-title').textContent = key ? `Edit: ${key}` : 'Add New Diet';
+            
+            const otherDiets = Object.keys(diets).filter(k => k !== key);
+            const impliesOptions = otherDiets.map(k => 
+                `<option value="${k}" ${(diet.implies || []).includes(k) ? 'selected' : ''}>${k}</option>`
+            ).join('');
+
+            const colorButtons = Object.entries(MC_COLORS).map(([code, info]) => 
+                `<button type="button" class="mc-color-btn" style="background: ${info.color}; color: ${info.color === '#000000' ? '#fff' : '#000'}" onclick="setDisplayNameColor('${code}')" title="${info.name}">${code.replace('§', '')}</button>`
+            ).join('');
+
+            const iconButtons = DIET_ICONS.map(icon => 
+                `<button type="button" class="mc-color-btn" onclick="setDietIcon('${icon}')">${icon}</button>`
+            ).join('');
+
+            document.getElementById('diet-editor-content').innerHTML = `
+                <!-- Basic Info -->
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <span>📋 Basic Information</span>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label>Diet ID (Key) *</label>
+                            <input type="text" id="diet-key" value="${key || ''}" placeholder="e.g., VEGAN" style="text-transform: uppercase;" ${key ? 'readonly' : ''}>
+                            <p class="help-text">Unique identifier (cannot be changed after creation)</p>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Display Name *</label>
+                                <input type="text" id="diet-display-name" value="${diet.display_name || ''}" placeholder="§aVegan" oninput="updateColorPreview()">
+                                <div class="mc-colors">${colorButtons}</div>
+                                <div id="color-preview" class="color-preview" style="margin-top: 0.5rem;"></div>
+                            </div>
+                            <div class="form-group">
+                                <label>Display Icon</label>
+                                <input type="text" id="diet-display-icon" value="${diet.display_icon || ''}" placeholder="🌱" maxlength="4">
+                                <div class="mc-colors">${iconButtons}</div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input type="text" id="diet-description" value="${diet.description || ''}" placeholder="Contains no animal products">
+                        </div>
+                        ${otherDiets.length > 0 ? `
+                        <div class="form-group">
+                            <label>Implies (this diet automatically includes)</label>
+                            <select id="diet-implies" multiple style="height: 80px;">
+                                ${impliesOptions}
+                            </select>
+                            <p class="help-text">Hold Ctrl/Cmd to select multiple</p>
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+
+                <!-- Violators -->
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <span>🚫 Violating Items</span>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label>Vanilla Minecraft Items</label>
+                            <div class="tags-container" id="violators-items-tags">
+                                ${(diet.violators?.items || []).map(item => `<span class="tag vanilla">${createItemTagHTML(item, 'vanilla', 'violators-items')}</span>`).join('')}
+                                <input type="text" class="tags-input" placeholder="Type item and press Enter..." onkeydown="handleTagInput(event, 'violators-items', 'vanilla')">
+                            </div>
+                            <p class="help-text">Items that violate this diet (e.g., BEEF, EGG, MILK_BUCKET)</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Custom Plugin Items</label>
+                            <div class="tags-container" id="violators-custom-tags">
+                                ${(diet.violators?.custom_items || []).map(item => `<span class="tag custom">${createItemTagHTML(item, 'custom', 'violators-custom')}</span>`).join('')}
+                                <input type="text" class="tags-input" placeholder="Type custom item and press Enter..." onkeydown="handleTagInput(event, 'violators-custom', 'custom')">
+                            </div>
+                            <p class="help-text">Custom items from your plugin (e.g., CHEESE, BACON)</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            updateColorPreview();
+            document.getElementById('diet-modal').style.display = 'block';
+        }
+
+        // Set display name color
+        function setDisplayNameColor(colorCode) {
+            const input = document.getElementById('diet-display-name');
+            const currentValue = input.value.replace(/§[0-9a-fk-or]/gi, '');
+            input.value = colorCode + currentValue;
+            updateColorPreview();
+        }
+
+        // Set diet icon
+        function setDietIcon(icon) {
+            document.getElementById('diet-display-icon').value = icon;
+        }
+
+        // Update color preview
+        function updateColorPreview() {
+            const input = document.getElementById('diet-display-name');
+            const preview = document.getElementById('color-preview');
+            if (!input || !preview) return;
+            
+            const value = input.value;
+            const colorCode = value.match(/§[0-9a-f]/)?.[0] || '§f';
+            const bgColor = MC_COLORS[colorCode]?.color || '#FFFFFF';
+            const cleanName = value.replace(/§[0-9a-fk-or]/gi, '');
+            
+            preview.style.background = 'var(--bg-primary)';
+            preview.style.color = bgColor;
+            preview.textContent = cleanName || 'Preview';
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('diet-modal').style.display = 'none';
+        }
+
+        // Tags handling
+        function handleTagInput(event, containerId, tagClass) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const input = event.target;
+                const value = input.value.trim().toUpperCase();
+                if (value) {
+                    const container = document.getElementById(`${containerId}-tags`);
+                    const tag = document.createElement('span');
+                    tag.className = `tag ${tagClass}`;
+                    tag.innerHTML = createItemTagHTML(value, tagClass, containerId);
+                    container.insertBefore(tag, input);
+                    input.value = '';
+                }
+            }
+        }
+
+        function removeTag(element, containerId) {
+            element.parentElement.remove();
+        }
+
+        function getTagsFromContainer(containerId) {
+            const container = document.getElementById(`${containerId}-tags`);
+            return Array.from(container.querySelectorAll('.tag')).map(tag => 
+                tag.textContent.replace('×', '').trim()
+            );
+        }
+
+        // Save diet
+        function saveDiet() {
+            const key = document.getElementById('diet-key').value.trim().toUpperCase();
+            const displayName = document.getElementById('diet-display-name').value.trim();
+            
+            if (!key || !displayName) {
+                showToast('Diet ID and Display Name are required', 'error');
+                return;
+            }
+
+            if (!editingDietKey && diets[key]) {
+                showToast('A diet with this ID already exists', 'error');
+                return;
+            }
+
+            const impliesSelect = document.getElementById('diet-implies');
+            const implies = impliesSelect ? Array.from(impliesSelect.selectedOptions).map(o => o.value) : [];
+
+            const diet = {
+                display_name: displayName,
+                display_icon: document.getElementById('diet-display-icon').value.trim() || '🏷️',
+                description: document.getElementById('diet-description').value.trim()
+            };
+
+            if (implies.length > 0) {
+                diet.implies = implies;
+            }
+
+            const violatorItems = getTagsFromContainer('violators-items');
+            const violatorCustom = getTagsFromContainer('violators-custom');
+
+            if (violatorItems.length > 0 || violatorCustom.length > 0) {
+                diet.violators = {};
+                if (violatorItems.length > 0) diet.violators.items = violatorItems;
+                if (violatorCustom.length > 0) diet.violators.custom_items = violatorCustom;
+            }
+
+            // Update hierarchy rules based on implies
+            if (implies.length > 0) {
+                hierarchyRules[key] = implies;
+            } else {
+                delete hierarchyRules[key];
+            }
+
+            diets[key] = diet;
+
+            closeModal();
+            renderDietsList();
+            updateJSONPreview();
+            showToast(editingDietKey ? 'Diet updated!' : 'Diet added!', 'success');
+        }
+
+        // Generate JSON output
+        function generateJSON() {
+            const output = {
+                dietary_properties: diets
+            };
+
+            // Add hierarchy rules if any exist
+            if (Object.keys(hierarchyRules).length > 0) {
+                output.hierarchy_rules = hierarchyRules;
+            }
+
+            // Add lore settings
+            output.lore_settings = {
+                show_in_lore: document.getElementById('lore_show_in_lore').checked,
+                lore_format: document.getElementById('lore_format').value,
+                prefix: document.getElementById('lore_prefix').value,
+                separator: document.getElementById('lore_separator').value,
+                show_violations: document.getElementById('lore_show_violations').checked
+            };
+
+            // Add contains settings
+            output.contains_settings = {
+                show_in_lore: document.getElementById('contains_show_in_lore').checked,
+                prefix: document.getElementById('contains_prefix').value,
+                separator: document.getElementById('contains_separator').value
+            };
+
+            return output;
+        }
+
+        // Update JSON preview
+        function updateJSONPreview() {
+            const json = generateJSON();
+            const jsonString = JSON.stringify(json, null, 2);
+            document.getElementById('json-output').innerHTML = syntaxHighlight(jsonString);
+        }
+
+        // Syntax highlighting
+        function syntaxHighlight(json) {
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                let cls = 'json-number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'json-key';
+                    } else {
+                        cls = 'json-string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'json-boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'json-null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+
+        // Copy JSON
+        function copyJSON() {
+            const json = generateJSON();
+            navigator.clipboard.writeText(JSON.stringify(json, null, 2)).then(() => {
+                showToast('JSON copied to clipboard!', 'success');
+            });
+        }
+
+        // Download JSON
+        function downloadJSON() {
+            const json = generateJSON();
+            const blob = new Blob([JSON.stringify(json, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'dietary_properties.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('dietary_properties.json downloaded!', 'success');
+        }
+
+        // Import JSON
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    if (data.dietary_properties) {
+                        diets = data.dietary_properties;
+                    }
+
+                    if (data.hierarchy_rules) {
+                        hierarchyRules = data.hierarchy_rules;
+                    }
+
+                    if (data.lore_settings) {
+                        document.getElementById('lore_show_in_lore').checked = data.lore_settings.show_in_lore !== false;
+                        document.getElementById('lore_format').value = data.lore_settings.lore_format || 'single_line';
+                        document.getElementById('lore_prefix').value = data.lore_settings.prefix || '§7Diet: ';
+                        document.getElementById('lore_separator').value = data.lore_settings.separator || ' ';
+                        document.getElementById('lore_show_violations').checked = data.lore_settings.show_violations === true;
+                    }
+
+                    if (data.contains_settings) {
+                        document.getElementById('contains_show_in_lore').checked = data.contains_settings.show_in_lore !== false;
+                        document.getElementById('contains_prefix').value = data.contains_settings.prefix || '§7Contains: ';
+                        document.getElementById('contains_separator').value = data.contains_settings.separator || ', ';
+                    }
+
+                    renderDietsList();
+                    updateJSONPreview();
+                    showToast('JSON imported successfully!', 'success');
+                } catch (err) {
+                    showToast('Invalid JSON file: ' + err.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = '';
+        }
+
+        // Toast notifications
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Close modal on outside click
+        document.getElementById('diet-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+    </script>
+</body>
+</html>
+

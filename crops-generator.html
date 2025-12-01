@@ -1,0 +1,1831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heirloom Kitchen - Garden & Crops</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Lato:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Rustic Cookbook Palette - Fresh Garden Green Theme */
+            --bg-primary: #F5F2EB;
+            --bg-secondary: #FFFFFF;
+            --bg-tertiary: #FAF8F5;
+            --bg-hover: #F0EDE6;
+            --border-primary: #E0DCD5;
+            --border-secondary: #D4CFC6;
+            --text-primary: #3E3B39;
+            --text-secondary: #6B6560;
+            --text-muted: #9A9590;
+            --accent-primary: #3A5A40;           /* Forest Green */
+            --accent-primary-light: #588157;     /* Lighter Forest Green */
+            --accent-secondary: #C65D3B;         /* Terracotta */
+            --accent-gold: #B8860B;              /* Dark Goldenrod */
+            --accent-cream: #A3B18A;             /* Sage Green */
+            --accent-red: #8B4513;               /* Saddle Brown */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.7;
+            /* Dotted paper texture */
+            background-image: radial-gradient(var(--border-primary) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2.5rem;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px double var(--border-primary);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--accent-primary);
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            color: var(--accent-secondary);
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Main layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Panels */
+        .panel {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            background: var(--bg-tertiary);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .panel-title {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .panel-title .icon {
+            width: 20px;
+            height: 20px;
+            opacity: 0.8;
+        }
+
+        .panel-body {
+            padding: 1.5rem;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 0;
+            background: var(--bg-secondary);
+            border-bottom: 2px solid var(--border-primary);
+            overflow: hidden;
+        }
+
+        .tab {
+            padding: 1.25rem 2rem;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: all 0.25s ease;
+            white-space: nowrap;
+            border: none;
+            background: transparent;
+            border-bottom: 3px solid transparent;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .tab:hover {
+            color: var(--accent-primary);
+            background: var(--bg-tertiary);
+        }
+
+        .tab.active {
+            color: var(--accent-primary);
+            background: var(--bg-tertiary);
+            border-bottom-color: var(--accent-primary);
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="url"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-family: 'Lato', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            background: var(--bg-secondary);
+            box-shadow: 0 0 0 3px rgba(58, 90, 64, 0.1);
+        }
+
+        input::placeholder {
+            color: var(--text-muted);
+        }
+
+        /* Checkbox */
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--bg-tertiary);
+            padding: 1rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-primary);
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-primary);
+            cursor: pointer;
+        }
+
+        .checkbox-group span {
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.85rem 1.75rem;
+            border-radius: 4px;
+            font-family: 'Lato', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--accent-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-primary-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(58, 90, 64, 0.25);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-secondary);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-secondary);
+            color: var(--accent-secondary);
+            background: rgba(198, 93, 59, 0.05);
+        }
+
+        .btn-danger {
+            background: transparent;
+            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+        }
+
+        .btn-danger:hover {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Action bar */
+        .action-bar {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        /* Crop cards */
+        .crops-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .crops-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .crops-list::-webkit-scrollbar-track {
+            background: var(--bg-primary);
+            border-radius: 3px;
+        }
+
+        .crops-list::-webkit-scrollbar-thumb {
+            background: var(--border-primary);
+            border-radius: 3px;
+        }
+
+        .crop-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-left: 4px solid var(--accent-cream);
+            border-radius: 6px;
+            padding: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .crop-card:hover {
+            border-left-color: var(--accent-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+            background: var(--bg-secondary);
+        }
+
+        .crop-card.active {
+            border-left-color: var(--accent-primary);
+            background: var(--bg-secondary);
+        }
+
+        .crop-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .crop-info {
+            flex: 1;
+        }
+
+        .crop-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .crop-type {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .crop-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* JSON Preview */
+        .json-preview {
+            background: #2D2D2D;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            overflow: auto;
+            max-height: 600px;
+            position: relative;
+        }
+
+        .json-preview pre {
+            padding: 1.5rem;
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: #E6E6E6;
+        }
+
+        .json-key { color: #C678DD; }
+        .json-string { color: #98C379; }
+        .json-number { color: #D19A66; }
+        .json-boolean { color: #61AFEF; }
+        .json-null { color: #888; }
+
+        /* Tags input */
+        .tags-container {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: 4px;
+            padding: 0.75rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            min-height: 56px;
+        }
+
+        .tags-container:focus-within {
+            border-color: var(--accent-primary);
+            background: var(--bg-secondary);
+            box-shadow: 0 0 0 3px rgba(58, 90, 64, 0.1);
+        }
+
+        .tag {
+            background: var(--accent-primary);
+            color: white;
+            padding: 0.35rem 0.65rem;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .tag .mc-icon {
+            width: 16px;
+            height: 16px;
+            image-rendering: pixelated;
+            flex-shrink: 0;
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            opacity: 0.7;
+            font-weight: bold;
+        }
+
+        .tag-remove:hover {
+            opacity: 1;
+        }
+
+        .tags-input {
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            font-family: 'Lato', sans-serif;
+            font-size: 0.875rem;
+            flex: 1;
+            min-width: 100px;
+            padding: 0.25rem;
+        }
+
+        .tags-input:focus {
+            outline: none;
+        }
+
+        /* Collapsible sections */
+        .section {
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+
+        .section-header {
+            background: var(--bg-tertiary);
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+
+        .section-header:hover {
+            background: var(--bg-hover);
+        }
+
+        .section-header .chevron {
+            transition: transform 0.2s ease;
+        }
+
+        .section-header.collapsed .chevron {
+            transform: rotate(-90deg);
+        }
+
+        .section-content {
+            padding: 1rem;
+            display: block;
+        }
+
+        .section-content.hidden {
+            display: none;
+        }
+
+        .tab-content.hidden {
+            display: none;
+        }
+
+        /* Drops editor */
+        .drop-item {
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+
+        .drop-item .remove-drop {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+        }
+
+        /* Toast notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1000;
+        }
+
+        .toast {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-top: 0.5rem;
+            box-shadow: var(--shadow-lg);
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast.success {
+            border-color: var(--accent-green);
+        }
+
+        .toast.error {
+            border-color: var(--accent-red);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Help text */
+        .help-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* Texture preview */
+        .texture-preview-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .texture-preview-box {
+            text-align: center;
+        }
+
+        .texture-preview {
+            width: 80px;
+            height: 80px;
+            background: var(--bg-primary);
+            border: 2px solid var(--border-primary);
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 0.5rem;
+            image-rendering: pixelated;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .texture-preview img {
+            width: 64px;
+            height: 64px;
+            image-rendering: pixelated;
+        }
+
+        .texture-preview.empty {
+            color: var(--text-muted);
+            font-size: 0.7rem;
+        }
+
+        .texture-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        /* Plant type badge */
+        .plant-type-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .plant-type-badge.SHORT_PLANT { background: #1f6feb33; color: #58a6ff; }
+        .plant-type-badge.TALL_PLANT { background: #23863633; color: #3fb950; }
+        .plant-type-badge.VINE { background: #a371f733; color: #a371f7; }
+        .plant-type-badge.AQUATIC { background: #39d4d933; color: #39d4d9; }
+        .plant-type-badge.BUSH { background: #d2992233; color: #d29922; }
+        .plant-type-badge.HANGING { background: #f8514933; color: #f85149; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 1.75rem;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* File input styling */
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Sticky header for json panel */
+        .json-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌾 Heirloom Kitchen</h1>
+            <p class="subtitle">Garden & Crops Studio</p>
+        </header>
+
+        <div class="main-grid">
+            <!-- Editor Panel -->
+            <div class="panel">
+                <div class="tabs">
+                    <button class="tab active" data-tab="settings">⚙️ Settings</button>
+                    <button class="tab" data-tab="plant-types">🌿 Plant Types</button>
+                    <button class="tab" data-tab="crops">🥬 Crops</button>
+                </div>
+
+                <!-- Settings Tab -->
+                <div class="panel-body tab-content" id="settings-tab">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Growth Check Radius</label>
+                            <input type="number" id="growth_check_radius" value="32" min="1" max="128">
+                            <p class="help-text">Radius in blocks to check for crop growth</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Visual Update Interval (ticks)</label>
+                            <input type="number" id="visual_update_interval_ticks" value="40" min="1">
+                            <p class="help-text">How often to update crop visuals (20 ticks = 1 second)</p>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="checkbox-group">
+                                <input type="checkbox" id="enable_particles" checked>
+                                <span>Enable Particles</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-group">
+                                <input type="checkbox" id="enable_growth_sounds" checked>
+                                <span>Enable Growth Sounds</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Plant Types Tab -->
+                <div class="panel-body tab-content hidden" id="plant-types-tab">
+                    <p style="color: var(--text-secondary); margin-bottom: 1rem;">
+                        Plant types define the base behavior for different crop categories. These are the default types:
+                    </p>
+                    <div id="plant-types-list"></div>
+                </div>
+
+                <!-- Crops Tab -->
+                <div class="panel-body tab-content hidden" id="crops-tab">
+                    <div class="action-bar" style="margin-bottom: 1rem;">
+                        <button class="btn btn-primary" onclick="addNewCrop()">
+                            <span>+</span> Add Crop
+                        </button>
+                        <div class="file-input-wrapper">
+                            <button class="btn btn-secondary">📁 Import JSON</button>
+                            <input type="file" accept=".json" onchange="importJSON(event)">
+                        </div>
+                    </div>
+                    
+                    <div class="crops-list" id="crops-list">
+                        <div class="empty-state">
+                            <div class="empty-state-icon">🌱</div>
+                            <p>No crops added yet</p>
+                            <p style="font-size: 0.875rem;">Click "Add Crop" to create your first crop</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JSON Preview Panel -->
+            <div class="panel">
+                <div class="panel-header json-header">
+                    <div class="panel-title">
+                        <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                        JSON Output
+                    </div>
+                    <div class="action-bar">
+                        <button class="btn btn-secondary btn-sm" onclick="copyJSON()">📋 Copy</button>
+                        <button class="btn btn-primary btn-sm" onclick="downloadJSON()">⬇️ Download</button>
+                    </div>
+                </div>
+                <div class="json-preview">
+                    <pre id="json-output"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Crop Editor Modal -->
+    <div id="crop-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 100; overflow-y: auto; padding: 2rem;">
+        <div class="panel" style="max-width: 800px; margin: 0 auto;">
+            <div class="panel-header">
+                <div class="panel-title" id="modal-title">Edit Crop</div>
+                <button class="btn btn-icon btn-secondary" onclick="closeModal()">✕</button>
+            </div>
+            <div class="panel-body" id="crop-editor-content">
+                <!-- Dynamically filled -->
+            </div>
+            <div style="padding: 1rem 1.5rem; border-top: 1px solid var(--border-primary); display: flex; justify-content: flex-end; gap: 0.75rem;">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveCrop()">Save Crop</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>
+        // Default plant types
+        const DEFAULT_PLANT_TYPES = {
+            "SHORT_PLANT": {
+                "description": "Small plants like lettuce, herbs - placed as ferns",
+                "block_material": "FERN",
+                "display_offset_y": 0.5,
+                "requires_water": false,
+                "requires_wall": false,
+                "can_spread": false
+            },
+            "TALL_PLANT": {
+                "description": "Tall crops like corn, sunflowers - uses tall grass",
+                "block_material": "TALL_GRASS",
+                "display_offset_y": 1.6,
+                "requires_water": false,
+                "requires_wall": false,
+                "can_spread": false
+            },
+            "VINE": {
+                "description": "Climbing plants like tomatoes, grapes - attach to walls",
+                "block_material": "VINE",
+                "display_offset_y": 0.5,
+                "requires_water": false,
+                "requires_wall": true,
+                "can_spread": true,
+                "spread_chance": 0.05,
+                "spread_direction": "UP"
+            },
+            "AQUATIC": {
+                "description": "Water plants like rice - placed on soil under water, peeks above",
+                "block_material": "SMALL_DRIPLEAF",
+                "display_offset_y": 1.6,
+                "requires_water": true,
+                "requires_wall": false,
+                "can_spread": false
+            },
+            "BUSH": {
+                "description": "Bush-type plants like berries - placed as sweet berry bushes",
+                "block_material": "SWEET_BERRY_BUSH",
+                "display_offset_y": 0.3,
+                "requires_water": false,
+                "requires_wall": false,
+                "can_spread": false
+            },
+            "HANGING": {
+                "description": "Hanging plants - attach below blocks",
+                "block_material": "HANGING_ROOTS",
+                "display_offset_y": -0.3,
+                "requires_water": false,
+                "requires_wall": false,
+                "requires_ceiling": true,
+                "can_spread": false
+            }
+        };
+
+        // Common Minecraft blocks for valid_blocks
+        const COMMON_BLOCKS = [
+            "GRASS_BLOCK", "DIRT", "COARSE_DIRT", "PODZOL", "FARMLAND", "ROOTED_DIRT",
+            "CLAY", "MUD", "GRAVEL", "SAND", "RED_SAND", "SOUL_SAND", "SOUL_SOIL",
+            "STONE", "COBBLESTONE", "STONE_BRICKS", "MOSSY_STONE_BRICKS", "DEEPSLATE",
+            "BRICKS", "MUD_BRICKS", "OAK_PLANKS", "SPRUCE_PLANKS", "BIRCH_PLANKS",
+            "JUNGLE_PLANKS", "ACACIA_PLANKS", "DARK_OAK_PLANKS", "MANGROVE_PLANKS",
+            "CHERRY_PLANKS", "BAMBOO_PLANKS"
+        ];
+
+        // Minecraft sounds
+        const HARVEST_SOUNDS = [
+            "BLOCK_SWEET_BERRY_BUSH_PICK_BERRIES",
+            "BLOCK_GRASS_BREAK",
+            "BLOCK_WET_GRASS_BREAK",
+            "BLOCK_VINE_BREAK",
+            "BLOCK_CROP_BREAK",
+            "BLOCK_AZALEA_LEAVES_BREAK",
+            "BLOCK_FLOWERING_AZALEA_BREAK"
+        ];
+
+        // Minecraft block icon URL helper - using InventivetalentDev's GitHub assets
+        // Some blocks have separate textures for top/side/bottom - we prefer top for display
+        const BLOCK_TEXTURE_MAP = {
+            'grass_block': 'grass_block_top',
+            'podzol': 'podzol_top',
+            'mycelium': 'mycelium_top',
+            'crimson_nylium': 'crimson_nylium',
+            'warped_nylium': 'warped_nylium',
+            'farmland': 'farmland',
+            'dirt_path': 'dirt_path_top',
+            'snow': 'snow',
+            'sand': 'sand',
+            'red_sand': 'red_sand',
+            'gravel': 'gravel',
+            'clay': 'clay',
+            'mud': 'mud',
+            'soul_sand': 'soul_sand',
+            'soul_soil': 'soul_soil'
+        };
+
+        function getMcBlockIcon(blockName) {
+            const name = blockName.toLowerCase();
+            const textureName = BLOCK_TEXTURE_MAP[name] || name;
+            return `https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.4/assets/minecraft/textures/block/${textureName}.png`;
+        }
+
+        // Create block tag HTML with icon
+        function createBlockTagHTML(blockName, containerId) {
+            const name = blockName.toLowerCase();
+            const textureName = BLOCK_TEXTURE_MAP[name] || name;
+            const blockUrl = `https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.4/assets/minecraft/textures/block/${textureName}.png`;
+            const itemUrl = `https://raw.githubusercontent.com/InventivetalentDev/minecraft-assets/1.20.4/assets/minecraft/textures/item/${name}.png`;
+            return `<img class="mc-icon" src="${blockUrl}" onerror="this.src='${itemUrl}'; this.onerror=()=>this.style.display='none'" alt="">${blockName}<span class="tag-remove" onclick="removeTag(this, '${containerId}')">×</span>`;
+        }
+
+        // State - Pre-loaded with example crops from crops.json
+        let crops = [
+            {
+                "id": "LETTUCE",
+                "item_id": "LETTUCE",
+                "plant_type": "SHORT_PLANT",
+                "growth": {
+                    "base_duration_seconds": 300,
+                    "variance": 0.2,
+                    "stages": 4,
+                    "scale_start": 0.3,
+                    "scale_end": 1.0
+                },
+                "planting": {
+                    "valid_blocks": ["GRASS_BLOCK", "DIRT", "COARSE_DIRT", "PODZOL", "ROOTED_DIRT"],
+                    "consume_item": true
+                },
+                "textures": {
+                    "growing": "http://textures.minecraft.net/texture/e5196969afcc1949c3538697cdd5b19197fa3851613468dbd55d03153899b6",
+                    "ripe": "http://textures.minecraft.net/texture/9979fe7b32fb7fc9746e157471f975f31afcb58fd8b5acb8bf53ec350f4d5c2"
+                },
+                "harvest": {
+                    "drops": [
+                        {"item_id": "LETTUCE", "min": 1, "max": 3, "chance": 1.0}
+                    ],
+                    "bonus_drops": [
+                        {"item_id": "LETTUCE", "min": 1, "max": 1, "chance": 0.15, "requires_fortune": true}
+                    ],
+                    "replant_after_harvest": true,
+                    "harvest_sound": "BLOCK_SWEET_BERRY_BUSH_PICK_BERRIES",
+                    "break_sound": "BLOCK_GRASS_BREAK"
+                }
+            },
+            {
+                "id": "CORN",
+                "item_id": "CORN",
+                "plant_type": "TALL_PLANT",
+                "growth": {
+                    "base_duration_seconds": 480,
+                    "variance": 0.25,
+                    "stages": 5,
+                    "scale_start": 0.2,
+                    "scale_end": 0.8
+                },
+                "planting": {
+                    "valid_blocks": ["GRASS_BLOCK", "DIRT", "COARSE_DIRT", "PODZOL", "ROOTED_DIRT"],
+                    "consume_item": true
+                },
+                "textures": {
+                    "growing": "http://textures.minecraft.net/texture/f0e1a5aadf3fa756724c2f916ea9c52ac79f8b13a2cffe9148521ee3cbbfa",
+                    "ripe": "http://textures.minecraft.net/texture/d3a6b099cd401e3a0d64d9a16f46cd0c5ca5f7e45e6a69c27d2e473775b25fe"
+                },
+                "harvest": {
+                    "drops": [
+                        {"item_id": "CORN", "min": 1, "max": 2, "chance": 1.0}
+                    ],
+                    "replant_after_harvest": true,
+                    "harvest_sound": "BLOCK_SWEET_BERRY_BUSH_PICK_BERRIES",
+                    "break_sound": "BLOCK_GRASS_BREAK"
+                }
+            },
+            {
+                "id": "TOMATO",
+                "item_id": "TOMATO",
+                "plant_type": "VINE",
+                "growth": {
+                    "base_duration_seconds": 420,
+                    "variance": 0.2,
+                    "stages": 4,
+                    "scale_start": 0.25,
+                    "scale_end": 0.6
+                },
+                "planting": {
+                    "valid_wall_blocks": ["STONE", "COBBLESTONE", "STONE_BRICKS", "MOSSY_STONE_BRICKS", "DEEPSLATE", "BRICKS", "MUD_BRICKS", "OAK_PLANKS", "SPRUCE_PLANKS", "BIRCH_PLANKS", "JUNGLE_PLANKS", "ACACIA_PLANKS", "DARK_OAK_PLANKS", "MANGROVE_PLANKS", "CHERRY_PLANKS", "BAMBOO_PLANKS"],
+                    "consume_item": true
+                },
+                "textures": {
+                    "growing": "http://textures.minecraft.net/texture/b77ad7b0ebfb3c2eea3f9cd4529e115319aba3e712e333550c99d5cf24b089",
+                    "ripe": "http://textures.minecraft.net/texture/4f14b58f3df65a0c6b90ee19464b2557c83ae2c9fa1b5738bb11364cd9f5b3e1"
+                },
+                "spreading": {
+                    "enabled": true,
+                    "chance_per_check": 0.08,
+                    "direction": "UP",
+                    "max_chain_length": 4
+                },
+                "harvest": {
+                    "drops": [
+                        {"item_id": "TOMATO", "min": 1, "max": 2, "chance": 1.0}
+                    ],
+                    "replant_after_harvest": true,
+                    "harvest_sound": "BLOCK_SWEET_BERRY_BUSH_PICK_BERRIES",
+                    "break_sound": "BLOCK_VINE_BREAK"
+                }
+            },
+            {
+                "id": "RICE",
+                "item_id": "RICE",
+                "plant_type": "AQUATIC",
+                "growth": {
+                    "base_duration_seconds": 360,
+                    "variance": 0.15,
+                    "stages": 4,
+                    "scale_start": 0.3,
+                    "scale_end": 0.7
+                },
+                "planting": {
+                    "valid_blocks": ["DIRT", "CLAY", "MUD", "GRAVEL", "SAND"],
+                    "requires_water_above": true,
+                    "consume_item": true
+                },
+                "textures": {
+                    "growing": "http://textures.minecraft.net/texture/1ab4af75112437363815f4924c222e08858d83af337c7d1ad52496b79af8ecad",
+                    "ripe": "http://textures.minecraft.net/texture/cb70f2fb5ebf49f79ff3e873616863ae5d362fbbfc31aef2dfb93d6e17dbf2"
+                },
+                "harvest": {
+                    "drops": [
+                        {"item_id": "RICE", "min": 2, "max": 4, "chance": 1.0}
+                    ],
+                    "replant_after_harvest": true,
+                    "harvest_sound": "BLOCK_WET_GRASS_BREAK",
+                    "break_sound": "BLOCK_WET_GRASS_BREAK"
+                }
+            }
+        ];
+        let plantTypes = { ...DEFAULT_PLANT_TYPES };
+        let editingCropIndex = -1;
+
+        // Crop icons by type
+        const CROP_ICONS = {
+            "SHORT_PLANT": "🥬",
+            "TALL_PLANT": "🌽",
+            "VINE": "🍅",
+            "AQUATIC": "🌾",
+            "BUSH": "🫐",
+            "HANGING": "🍇"
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initTabs();
+            renderPlantTypes();
+            renderCropsList();
+            updateJSONPreview();
+        });
+
+        // Tab switching
+        function initTabs() {
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
+                    tab.classList.add('active');
+                    document.getElementById(`${tab.dataset.tab}-tab`).classList.remove('hidden');
+                });
+            });
+
+            // Settings inputs trigger JSON update
+            ['growth_check_radius', 'visual_update_interval_ticks', 'enable_particles', 'enable_growth_sounds'].forEach(id => {
+                const el = document.getElementById(id);
+                el.addEventListener('change', updateJSONPreview);
+                el.addEventListener('input', updateJSONPreview);
+            });
+        }
+
+        // Render plant types (read-only display)
+        function renderPlantTypes() {
+            const container = document.getElementById('plant-types-list');
+            container.innerHTML = Object.entries(plantTypes).map(([key, type]) => `
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <span><span class="plant-type-badge ${key}">${key}</span></span>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="section-content">
+                        <p style="color: var(--text-secondary); margin-bottom: 1rem;">${type.description}</p>
+                        <div class="form-row">
+                            <div><strong>Block:</strong> ${type.block_material}</div>
+                            <div><strong>Y Offset:</strong> ${type.display_offset_y}</div>
+                        </div>
+                        <div class="form-row" style="margin-top: 0.5rem;">
+                            <div><strong>Requires Water:</strong> ${type.requires_water ? '✅' : '❌'}</div>
+                            <div><strong>Requires Wall:</strong> ${type.requires_wall ? '✅' : '❌'}</div>
+                            <div><strong>Can Spread:</strong> ${type.can_spread ? '✅' : '❌'}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Toggle collapsible section
+        function toggleSection(header) {
+            header.classList.toggle('collapsed');
+            header.nextElementSibling.classList.toggle('hidden');
+        }
+
+        // Render crops list
+        function renderCropsList() {
+            const container = document.getElementById('crops-list');
+            if (crops.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🌱</div>
+                        <p>No crops added yet</p>
+                        <p style="font-size: 0.875rem;">Click "Add Crop" to create your first crop</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = crops.map((crop, index) => `
+                <div class="crop-card" onclick="editCrop(${index})">
+                    <div class="crop-icon">${CROP_ICONS[crop.plant_type] || '🌱'}</div>
+                    <div class="crop-info">
+                        <div class="crop-name">${crop.id}</div>
+                        <div class="crop-type">
+                            <span class="plant-type-badge ${crop.plant_type}">${crop.plant_type}</span>
+                            <span style="margin-left: 0.5rem;">• ${crop.growth?.base_duration_seconds || 300}s growth</span>
+                        </div>
+                    </div>
+                    <div class="crop-actions">
+                        <button class="btn btn-icon btn-secondary" onclick="event.stopPropagation(); duplicateCrop(${index})" title="Duplicate">📋</button>
+                        <button class="btn btn-icon btn-danger" onclick="event.stopPropagation(); deleteCrop(${index})" title="Delete">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Add new crop
+        function addNewCrop() {
+            editingCropIndex = -1;
+            openCropEditor({
+                id: "",
+                item_id: "",
+                plant_type: "SHORT_PLANT",
+                growth: {
+                    base_duration_seconds: 300,
+                    variance: 0.2,
+                    stages: 4,
+                    scale_start: 0.3,
+                    scale_end: 1.0
+                },
+                planting: {
+                    valid_blocks: ["GRASS_BLOCK", "DIRT", "FARMLAND"],
+                    consume_item: true
+                },
+                textures: {
+                    growing: "",
+                    ripe: ""
+                },
+                harvest: {
+                    drops: [
+                        { item_id: "", min: 1, max: 2, chance: 1.0 }
+                    ],
+                    replant_after_harvest: true,
+                    harvest_sound: "BLOCK_SWEET_BERRY_BUSH_PICK_BERRIES",
+                    break_sound: "BLOCK_GRASS_BREAK"
+                }
+            });
+        }
+
+        // Edit existing crop
+        function editCrop(index) {
+            editingCropIndex = index;
+            openCropEditor({ ...crops[index] });
+        }
+
+        // Duplicate crop
+        function duplicateCrop(index) {
+            const copy = JSON.parse(JSON.stringify(crops[index]));
+            copy.id = copy.id + "_COPY";
+            copy.item_id = copy.item_id + "_COPY";
+            crops.push(copy);
+            renderCropsList();
+            updateJSONPreview();
+            showToast('Crop duplicated!', 'success');
+        }
+
+        // Delete crop
+        function deleteCrop(index) {
+            if (confirm('Are you sure you want to delete this crop?')) {
+                crops.splice(index, 1);
+                renderCropsList();
+                updateJSONPreview();
+                showToast('Crop deleted', 'success');
+            }
+        }
+
+        // Open crop editor modal
+        function openCropEditor(crop) {
+            document.getElementById('modal-title').textContent = editingCropIndex === -1 ? 'Add New Crop' : `Edit: ${crop.id}`;
+            
+            const plantTypeOptions = Object.keys(plantTypes).map(pt => 
+                `<option value="${pt}" ${crop.plant_type === pt ? 'selected' : ''}>${pt}</option>`
+            ).join('');
+
+            const soundOptions = (sounds, selected) => sounds.map(s => 
+                `<option value="${s}" ${selected === s ? 'selected' : ''}>${s}</option>`
+            ).join('');
+
+            const dropsHTML = (crop.harvest?.drops || []).map((drop, i) => `
+                <div class="drop-item" data-drop-index="${i}">
+                    <button class="btn btn-icon btn-danger btn-sm remove-drop" onclick="removeDrop(${i})">✕</button>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Item ID</label>
+                            <input type="text" class="drop-item-id" value="${drop.item_id || ''}" placeholder="e.g., LETTUCE">
+                        </div>
+                        <div class="form-group">
+                            <label>Min</label>
+                            <input type="number" class="drop-min" value="${drop.min || 1}" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Max</label>
+                            <input type="number" class="drop-max" value="${drop.max || 2}" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label>Chance</label>
+                            <input type="number" class="drop-chance" value="${drop.chance || 1.0}" min="0" max="1" step="0.05">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-group">
+                            <input type="checkbox" class="drop-fortune" ${drop.requires_fortune ? 'checked' : ''}>
+                            <span>Requires Fortune enchantment</span>
+                        </label>
+                    </div>
+                </div>
+            `).join('');
+
+            const validBlocksData = crop.planting?.valid_blocks || [];
+            const validWallBlocksData = crop.planting?.valid_wall_blocks || [];
+            const isVine = crop.plant_type === 'VINE';
+            const isAquatic = crop.plant_type === 'AQUATIC';
+
+            document.getElementById('crop-editor-content').innerHTML = `
+                <!-- Basic Info -->
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <span>📋 Basic Information</span>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Crop ID *</label>
+                                <input type="text" id="crop-id" value="${crop.id}" placeholder="e.g., LETTUCE" style="text-transform: uppercase;">
+                                <p class="help-text">Unique identifier for this crop</p>
+                            </div>
+                            <div class="form-group">
+                                <label>Item ID *</label>
+                                <input type="text" id="crop-item-id" value="${crop.item_id}" placeholder="e.g., LETTUCE" style="text-transform: uppercase;">
+                                <p class="help-text">Item used for planting (from custom_items.json)</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Plant Type *</label>
+                            <select id="crop-plant-type" onchange="onPlantTypeChange()">
+                                ${plantTypeOptions}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Growth Settings -->
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <span>📈 Growth Settings</span>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Growth Duration (seconds)</label>
+                                <input type="number" id="crop-growth-duration" value="${crop.growth?.base_duration_seconds || 300}" min="1">
+                            </div>
+                            <div class="form-group">
+                                <label>Variance</label>
+                                <input type="number" id="crop-growth-variance" value="${crop.growth?.variance || 0.2}" min="0" max="1" step="0.05">
+                                <p class="help-text">Random variation in growth time (0-1)</p>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Growth Stages</label>
+                                <input type="number" id="crop-growth-stages" value="${crop.growth?.stages || 4}" min="1" max="10">
+                            </div>
+                            <div class="form-group">
+                                <label>Scale Start</label>
+                                <input type="number" id="crop-scale-start" value="${crop.growth?.scale_start || 0.3}" min="0.1" max="2" step="0.1">
+                            </div>
+                            <div class="form-group">
+                                <label>Scale End</label>
+                                <input type="number" id="crop-scale-end" value="${crop.growth?.scale_end || 1.0}" min="0.1" max="2" step="0.1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Planting Requirements -->
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <span>🌍 Planting Requirements</span>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-group" id="valid-blocks-group" style="${isVine ? 'display:none;' : ''}">
+                            <label>Valid Planting Blocks</label>
+                            <div class="tags-container" id="valid-blocks-tags">
+                                ${validBlocksData.map(b => `<span class="tag">${createBlockTagHTML(b, 'valid-blocks')}</span>`).join('')}
+                                <input type="text" class="tags-input" placeholder="Type and press Enter..." onkeydown="handleTagInput(event, 'valid-blocks')">
+                            </div>
+                            <p class="help-text">Press Enter to add a block. Common: GRASS_BLOCK, DIRT, FARMLAND</p>
+                        </div>
+                        <div class="form-group" id="valid-wall-blocks-group" style="${!isVine ? 'display:none;' : ''}">
+                            <label>Valid Wall Blocks (for Vines)</label>
+                            <div class="tags-container" id="valid-wall-blocks-tags">
+                                ${validWallBlocksData.map(b => `<span class="tag">${createBlockTagHTML(b, 'valid-wall-blocks')}</span>`).join('')}
+                                <input type="text" class="tags-input" placeholder="Type and press Enter..." onkeydown="handleTagInput(event, 'valid-wall-blocks')">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="checkbox-group">
+                                    <input type="checkbox" id="crop-consume-item" ${crop.planting?.consume_item !== false ? 'checked' : ''}>
+                                    <span>Consume item when planting</span>
+                                </label>
+                            </div>
+                            <div class="form-group" id="water-above-group" style="${!isAquatic ? 'display:none;' : ''}">
+                                <label class="checkbox-group">
+                                    <input type="checkbox" id="crop-requires-water-above" ${crop.planting?.requires_water_above ? 'checked' : ''}>
+                                    <span>Requires water above</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Textures -->
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <span>🎨 Textures</span>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label>Growing Texture URL</label>
+                            <input type="url" id="crop-texture-growing" value="${crop.textures?.growing || ''}" placeholder="http://textures.minecraft.net/texture/..." oninput="updateTexturePreview()">
+                        </div>
+                        <div class="form-group">
+                            <label>Ripe Texture URL</label>
+                            <input type="url" id="crop-texture-ripe" value="${crop.textures?.ripe || ''}" placeholder="http://textures.minecraft.net/texture/..." oninput="updateTexturePreview()">
+                        </div>
+                        <p class="help-text">Use Minecraft head texture URLs from minecraft-heads.com or similar</p>
+                        <div class="texture-preview-container" style="margin-top: 1rem;">
+                            <div class="texture-preview-box">
+                                <div class="texture-label">🌱 Growing Preview</div>
+                                <div class="texture-preview empty" id="preview-growing">No texture</div>
+                            </div>
+                            <div class="texture-preview-box">
+                                <div class="texture-label">🌾 Ripe Preview</div>
+                                <div class="texture-preview empty" id="preview-ripe">No texture</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Spreading (Vine only) -->
+                <div class="section" id="spreading-section" style="${!isVine ? 'display:none;' : ''}">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <span>🌿 Spreading (Vine)</span>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label class="checkbox-group">
+                                <input type="checkbox" id="crop-spreading-enabled" ${crop.spreading?.enabled ? 'checked' : ''}>
+                                <span>Enable spreading</span>
+                            </label>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Spread Chance</label>
+                                <input type="number" id="crop-spread-chance" value="${crop.spreading?.chance_per_check || 0.08}" min="0" max="1" step="0.01">
+                            </div>
+                            <div class="form-group">
+                                <label>Spread Direction</label>
+                                <select id="crop-spread-direction">
+                                    <option value="UP" ${crop.spreading?.direction === 'UP' ? 'selected' : ''}>UP</option>
+                                    <option value="DOWN" ${crop.spreading?.direction === 'DOWN' ? 'selected' : ''}>DOWN</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Max Chain Length</label>
+                                <input type="number" id="crop-max-chain" value="${crop.spreading?.max_chain_length || 4}" min="1" max="20">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Harvest Settings -->
+                <div class="section">
+                    <div class="section-header" onclick="toggleSection(this)">
+                        <span>🧺 Harvest Settings</span>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="section-content">
+                        <div class="form-group">
+                            <label class="checkbox-group">
+                                <input type="checkbox" id="crop-replant" ${crop.harvest?.replant_after_harvest !== false ? 'checked' : ''}>
+                                <span>Replant after harvest</span>
+                            </label>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Harvest Sound</label>
+                                <select id="crop-harvest-sound">
+                                    ${soundOptions(HARVEST_SOUNDS, crop.harvest?.harvest_sound)}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Break Sound</label>
+                                <select id="crop-break-sound">
+                                    ${soundOptions(HARVEST_SOUNDS, crop.harvest?.break_sound)}
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <label style="margin-top: 1rem;">Drops</label>
+                        <div id="drops-container">
+                            ${dropsHTML}
+                        </div>
+                        <button class="btn btn-secondary btn-sm" onclick="addDrop()" style="margin-top: 0.5rem;">+ Add Drop</button>
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('crop-modal').style.display = 'block';
+            
+            // Small delay to ensure DOM is ready, then update previews
+            setTimeout(() => {
+                updateTexturePreview();
+            }, 50);
+        }
+
+        // Update texture preview images
+        function updateTexturePreview() {
+            const growingUrl = document.getElementById('crop-texture-growing')?.value || '';
+            const ripeUrl = document.getElementById('crop-texture-ripe')?.value || '';
+            
+            updateSingleTexturePreview('preview-growing', growingUrl);
+            updateSingleTexturePreview('preview-ripe', ripeUrl);
+        }
+
+        function updateSingleTexturePreview(elementId, textureUrl) {
+            const preview = document.getElementById(elementId);
+            if (!preview) return;
+            
+            if (!textureUrl) {
+                preview.className = 'texture-preview empty';
+                preview.innerHTML = 'No texture';
+                return;
+            }
+            
+            // Extract texture ID from URL (e.g., http://textures.minecraft.net/texture/ABC123...)
+            const match = textureUrl.match(/texture\/([a-f0-9]+)/i);
+            if (match) {
+                const textureId = match[1];
+                // Use mc-heads.net to render the head (64x64 px), with fallback to raw texture
+                const headUrl = `https://mc-heads.net/head/${textureId}/64`;
+                preview.className = 'texture-preview';
+                preview.innerHTML = `<img src="${headUrl}" alt="Texture preview" onerror="if(this.src.includes('mc-heads.net')) { this.src='${textureUrl}'; } else { this.parentElement.className='texture-preview empty'; this.parentElement.innerHTML='Invalid texture'; }">`;
+            } else {
+                preview.className = 'texture-preview empty';
+                preview.innerHTML = 'Invalid URL';
+            }
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('crop-modal').style.display = 'none';
+        }
+
+        // Plant type change handler
+        function onPlantTypeChange() {
+            const type = document.getElementById('crop-plant-type').value;
+            const isVine = type === 'VINE';
+            const isAquatic = type === 'AQUATIC';
+            
+            document.getElementById('valid-blocks-group').style.display = isVine ? 'none' : '';
+            document.getElementById('valid-wall-blocks-group').style.display = isVine ? '' : 'none';
+            document.getElementById('spreading-section').style.display = isVine ? '' : 'none';
+            document.getElementById('water-above-group').style.display = isAquatic ? '' : 'none';
+        }
+
+        // Tags handling
+        function handleTagInput(event, containerId) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                const input = event.target;
+                const value = input.value.trim().toUpperCase();
+                if (value) {
+                    const container = document.getElementById(`${containerId}-tags`);
+                    const tag = document.createElement('span');
+                    tag.className = 'tag';
+                    tag.innerHTML = createBlockTagHTML(value, containerId);
+                    container.insertBefore(tag, input);
+                    input.value = '';
+                }
+            }
+        }
+
+        function removeTag(element, containerId) {
+            element.parentElement.remove();
+        }
+
+        function getTagsFromContainer(containerId) {
+            const container = document.getElementById(`${containerId}-tags`);
+            return Array.from(container.querySelectorAll('.tag')).map(tag => 
+                tag.textContent.replace('×', '').trim()
+            );
+        }
+
+        // Drops management
+        function addDrop() {
+            const container = document.getElementById('drops-container');
+            const index = container.children.length;
+            const dropHTML = `
+                <div class="drop-item" data-drop-index="${index}">
+                    <button class="btn btn-icon btn-danger btn-sm remove-drop" onclick="removeDrop(${index})">✕</button>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Item ID</label>
+                            <input type="text" class="drop-item-id" value="" placeholder="e.g., LETTUCE">
+                        </div>
+                        <div class="form-group">
+                            <label>Min</label>
+                            <input type="number" class="drop-min" value="1" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Max</label>
+                            <input type="number" class="drop-max" value="2" min="1">
+                        </div>
+                        <div class="form-group">
+                            <label>Chance</label>
+                            <input type="number" class="drop-chance" value="1.0" min="0" max="1" step="0.05">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-group">
+                            <input type="checkbox" class="drop-fortune">
+                            <span>Requires Fortune enchantment</span>
+                        </label>
+                    </div>
+                </div>
+            `;
+            container.insertAdjacentHTML('beforeend', dropHTML);
+        }
+
+        function removeDrop(index) {
+            const drops = document.querySelectorAll('#drops-container .drop-item');
+            if (drops.length > 1) {
+                drops[index]?.remove();
+            } else {
+                showToast('At least one drop is required', 'error');
+            }
+        }
+
+        // Save crop
+        function saveCrop() {
+            const id = document.getElementById('crop-id').value.trim().toUpperCase();
+            const itemId = document.getElementById('crop-item-id').value.trim().toUpperCase();
+            
+            if (!id || !itemId) {
+                showToast('Crop ID and Item ID are required', 'error');
+                return;
+            }
+
+            const plantType = document.getElementById('crop-plant-type').value;
+            const isVine = plantType === 'VINE';
+            const isAquatic = plantType === 'AQUATIC';
+
+            const crop = {
+                id,
+                item_id: itemId,
+                plant_type: plantType,
+                growth: {
+                    base_duration_seconds: parseInt(document.getElementById('crop-growth-duration').value) || 300,
+                    variance: parseFloat(document.getElementById('crop-growth-variance').value) || 0.2,
+                    stages: parseInt(document.getElementById('crop-growth-stages').value) || 4,
+                    scale_start: parseFloat(document.getElementById('crop-scale-start').value) || 0.3,
+                    scale_end: parseFloat(document.getElementById('crop-scale-end').value) || 1.0
+                },
+                planting: {
+                    consume_item: document.getElementById('crop-consume-item').checked
+                },
+                textures: {
+                    growing: document.getElementById('crop-texture-growing').value.trim(),
+                    ripe: document.getElementById('crop-texture-ripe').value.trim()
+                },
+                harvest: {
+                    drops: [],
+                    replant_after_harvest: document.getElementById('crop-replant').checked,
+                    harvest_sound: document.getElementById('crop-harvest-sound').value,
+                    break_sound: document.getElementById('crop-break-sound').value
+                }
+            };
+
+            // Planting blocks
+            if (isVine) {
+                crop.planting.valid_wall_blocks = getTagsFromContainer('valid-wall-blocks');
+            } else {
+                crop.planting.valid_blocks = getTagsFromContainer('valid-blocks');
+            }
+
+            if (isAquatic) {
+                crop.planting.requires_water_above = document.getElementById('crop-requires-water-above').checked;
+            }
+
+            // Spreading (Vine only)
+            if (isVine) {
+                const spreadingEnabled = document.getElementById('crop-spreading-enabled').checked;
+                if (spreadingEnabled) {
+                    crop.spreading = {
+                        enabled: true,
+                        chance_per_check: parseFloat(document.getElementById('crop-spread-chance').value) || 0.08,
+                        direction: document.getElementById('crop-spread-direction').value,
+                        max_chain_length: parseInt(document.getElementById('crop-max-chain').value) || 4
+                    };
+                }
+            }
+
+            // Harvest drops
+            document.querySelectorAll('#drops-container .drop-item').forEach(dropEl => {
+                const drop = {
+                    item_id: dropEl.querySelector('.drop-item-id').value.trim().toUpperCase(),
+                    min: parseInt(dropEl.querySelector('.drop-min').value) || 1,
+                    max: parseInt(dropEl.querySelector('.drop-max').value) || 2,
+                    chance: parseFloat(dropEl.querySelector('.drop-chance').value) || 1.0
+                };
+                if (dropEl.querySelector('.drop-fortune').checked) {
+                    drop.requires_fortune = true;
+                }
+                if (drop.item_id) {
+                    crop.harvest.drops.push(drop);
+                }
+            });
+
+            // If no item_id in drops, use the crop's item_id
+            if (crop.harvest.drops.length === 0) {
+                crop.harvest.drops.push({
+                    item_id: itemId,
+                    min: 1,
+                    max: 2,
+                    chance: 1.0
+                });
+            }
+
+            // Save
+            if (editingCropIndex === -1) {
+                crops.push(crop);
+                showToast('Crop added!', 'success');
+            } else {
+                crops[editingCropIndex] = crop;
+                showToast('Crop updated!', 'success');
+            }
+
+            closeModal();
+            renderCropsList();
+            updateJSONPreview();
+        }
+
+        // Generate JSON output
+        function generateJSON() {
+            const output = {
+                _comment: "Gardening System Configuration - Define custom crops and their growth behaviors",
+                settings: {
+                    growth_check_radius: parseInt(document.getElementById('growth_check_radius').value) || 32,
+                    visual_update_interval_ticks: parseInt(document.getElementById('visual_update_interval_ticks').value) || 40,
+                    enable_particles: document.getElementById('enable_particles').checked,
+                    enable_growth_sounds: document.getElementById('enable_growth_sounds').checked
+                },
+                plant_types: plantTypes,
+                crops: crops
+            };
+            return output;
+        }
+
+        // Update JSON preview with syntax highlighting
+        function updateJSONPreview() {
+            const json = generateJSON();
+            const jsonString = JSON.stringify(json, null, 2);
+            document.getElementById('json-output').innerHTML = syntaxHighlight(jsonString);
+        }
+
+        // Syntax highlighting
+        function syntaxHighlight(json) {
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                let cls = 'json-number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) {
+                        cls = 'json-key';
+                    } else {
+                        cls = 'json-string';
+                    }
+                } else if (/true|false/.test(match)) {
+                    cls = 'json-boolean';
+                } else if (/null/.test(match)) {
+                    cls = 'json-null';
+                }
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
+        }
+
+        // Copy JSON
+        function copyJSON() {
+            const json = generateJSON();
+            navigator.clipboard.writeText(JSON.stringify(json, null, 2)).then(() => {
+                showToast('JSON copied to clipboard!', 'success');
+            });
+        }
+
+        // Download JSON
+        function downloadJSON() {
+            const json = generateJSON();
+            const blob = new Blob([JSON.stringify(json, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'crops.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('crops.json downloaded!', 'success');
+        }
+
+        // Import JSON
+        function importJSON(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    // Import settings
+                    if (data.settings) {
+                        document.getElementById('growth_check_radius').value = data.settings.growth_check_radius || 32;
+                        document.getElementById('visual_update_interval_ticks').value = data.settings.visual_update_interval_ticks || 40;
+                        document.getElementById('enable_particles').checked = data.settings.enable_particles !== false;
+                        document.getElementById('enable_growth_sounds').checked = data.settings.enable_growth_sounds !== false;
+                    }
+
+                    // Import plant types
+                    if (data.plant_types) {
+                        plantTypes = { ...DEFAULT_PLANT_TYPES, ...data.plant_types };
+                        renderPlantTypes();
+                    }
+
+                    // Import crops
+                    if (data.crops && Array.isArray(data.crops)) {
+                        crops = data.crops;
+                        renderCropsList();
+                    }
+
+                    updateJSONPreview();
+                    showToast('JSON imported successfully!', 'success');
+                } catch (err) {
+                    showToast('Invalid JSON file: ' + err.message, 'error');
+                }
+            };
+            reader.readAsText(file);
+            event.target.value = ''; // Reset file input
+        }
+
+        // Toast notifications
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(100%)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Close modal on outside click
+        document.getElementById('crop-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
+

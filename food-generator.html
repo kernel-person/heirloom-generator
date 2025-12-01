@@ -1,0 +1,2268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heirloom Kitchen - Food Plugin Studio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Lato:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Rustic Cookbook Palette */
+            --bg-primary: #F5F2EB;          /* Warm Parchment */
+            --bg-secondary: #FFFFFF;         /* Clean White */
+            --bg-tertiary: #FAF8F5;          /* Off-White */
+            --bg-hover: #F0EDE6;             /* Hover Cream */
+            --border-primary: #E0DCD5;       /* Soft Grey-Beige */
+            --border-secondary: #D4CFC6;     /* Darker Beige */
+            --text-primary: #3E3B39;         /* Charcoal */
+            --text-secondary: #6B6560;       /* Warm Grey */
+            --text-muted: #9A9590;           /* Muted Brown-Grey */
+            --accent-green: #556B2F;         /* Sage/Olive Green */
+            --accent-green-light: #6B8E23;   /* Lighter Olive */
+            --accent-terracotta: #C65D3B;    /* Terracotta/Rust */
+            --accent-gold: #B8860B;          /* Dark Goldenrod */
+            --accent-cream: #DEB887;         /* Burlywood */
+            --accent-red: #8B4513;           /* Saddle Brown (for delete) */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.7;
+            /* Dotted paper texture like recipe cards */
+            background-image: radial-gradient(var(--border-primary) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2.5rem;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px double var(--border-primary);
+        }
+
+        h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--accent-green);
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            color: var(--accent-terracotta);
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 0;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-primary);
+            background: var(--bg-secondary);
+            border-radius: 8px 8px 0 0;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
+        }
+
+        .tab-button {
+            padding: 1.25rem 2rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.25s ease;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .tab-button:hover {
+            color: var(--accent-green);
+            background: var(--bg-tertiary);
+        }
+
+        .tab-button.active {
+            color: var(--accent-green);
+            border-bottom-color: var(--accent-green);
+            background: var(--bg-tertiary);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 2px 4px -1px rgba(0,0,0,0.03);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--accent-green);
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.85rem 1.75rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .btn-primary {
+            background: var(--accent-green);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-green-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(85, 107, 47, 0.25);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-secondary);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-terracotta);
+            color: var(--accent-terracotta);
+            background: rgba(198, 93, 59, 0.05);
+        }
+
+        .btn-danger {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #723910;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.85rem;
+        }
+        
+        .icon-btn {
+            background: transparent;
+            border: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0.35rem 0.5rem;
+            opacity: 0.6;
+            transition: all 0.2s;
+            border-radius: 4px;
+        }
+        
+        .icon-btn:hover {
+            opacity: 1;
+            background: var(--bg-hover);
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        /* Item List */
+        .item-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.25rem;
+        }
+
+        .item-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: 6px;
+            padding: 1.25rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-left: 4px solid var(--accent-cream);
+        }
+
+        .item-card:hover {
+            border-left-color: var(--accent-terracotta);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+            background: var(--bg-secondary);
+        }
+
+        .item-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 6px;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 2px solid var(--border-primary);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .item-icon img, .item-icon canvas {
+            width: 44px;
+            height: 44px;
+            image-rendering: pixelated;
+        }
+
+        .item-icon .placeholder {
+            font-size: 1.75rem;
+        }
+
+        .item-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .item-name {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--text-primary);
+        }
+
+        .item-id {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 0.25rem;
+        }
+
+        .icon-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+            font-size: 1.1rem;
+        }
+
+        .icon-btn:hover {
+            background: var(--bg-hover);
+            color: var(--accent-terracotta);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(62, 59, 57, 0.85);
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-radius: 8px;
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+
+        .modal-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 2px solid var(--accent-green);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-tertiary);
+        }
+
+        .modal-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .close-btn:hover {
+            background: var(--bg-hover);
+            color: var(--accent-terracotta);
+        }
+
+        .modal-body {
+            padding: 2rem;
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--border-primary);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            background: var(--bg-tertiary);
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-secondary);
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="url"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            font-family: 'Lato', sans-serif;
+            transition: all 0.2s;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent-green);
+            background: var(--bg-secondary);
+            box-shadow: 0 0 0 3px rgba(85, 107, 47, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--bg-tertiary);
+            padding: 1rem;
+            border-radius: 4px;
+            border: 1px solid var(--border-primary);
+        }
+
+        input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--accent-green);
+        }
+
+        /* Player Head Preview */
+        .head-preview-container {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1rem;
+            padding: 1.5rem;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            border: 1px solid var(--border-primary);
+        }
+
+        .head-preview {
+            text-align: center;
+        }
+
+        .head-preview-box {
+            width: 128px;
+            height: 128px;
+            background: var(--bg-secondary);
+            border: 2px solid var(--border-primary);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+            image-rendering: pixelated;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .head-preview-box img {
+            max-width: 100%;
+            max-height: 100%;
+            image-rendering: pixelated;
+        }
+
+        .head-preview-box.empty {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .head-preview-label {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        /* Help Text */
+        .help-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            padding: 0.3rem 0.85rem;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-success {
+            background: rgba(85, 107, 47, 0.15);
+            color: var(--accent-green);
+            border: 1px solid rgba(85, 107, 47, 0.3);
+        }
+
+        .badge-info {
+            background: rgba(198, 93, 59, 0.1);
+            color: var(--accent-terracotta);
+            border: 1px solid rgba(198, 93, 59, 0.25);
+        }
+
+        /* Nested Item */
+        .nested-item {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-primary);
+            border-left: 3px solid var(--accent-terracotta);
+            border-radius: 4px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .nested-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border-primary);
+        }
+
+        .nested-title {
+            font-weight: 700;
+            color: var(--accent-green);
+            font-size: 0.95rem;
+        }
+
+        .delete-nested {
+            background: none;
+            border: none;
+            color: var(--accent-red);
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .delete-nested:hover {
+            background: rgba(139, 69, 19, 0.1);
+        }
+
+        /* JSON Output */
+        .json-output {
+            background: #2D2D2D;
+            border: 1px solid var(--border-primary);
+            border-radius: 4px;
+            padding: 1.5rem;
+        }
+
+        .json-output pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-break: break-word;
+            font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: #E6E6E6;
+            line-height: 1.6;
+        }
+
+        .output-actions {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.4;
+        }
+
+        .empty-state h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-tertiary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-secondary);
+            border-radius: 5px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        .ingredient-option {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-primary);
+            border-left: 3px solid var(--accent-cream);
+            border-radius: 4px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .ingredient-option:hover {
+            border-left-color: var(--accent-terracotta);
+        }
+
+        .ingredient-option select,
+        .ingredient-option input {
+            flex: 1;
+        }
+
+        /* Section Headers */
+        h3 {
+            font-family: 'Playfair Display', Georgia, serif;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--accent-green);
+            padding-bottom: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Decorative elements */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-terracotta));
+            border-radius: 8px 8px 0 0;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .card:hover::before {
+            opacity: 0;
+        }
+
+        /* Recipe/Item cards have a warm feel */
+        .item-card .item-name {
+            font-family: 'Lato', sans-serif;
+        }
+
+        /* Selection highlight */
+        ::selection {
+            background: rgba(85, 107, 47, 0.3);
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍅 Heirloom Kitchen</h1>
+            <p class="subtitle">Culinary Recipe & Item Studio</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('items', event)">🎨 Custom Items</button>
+            <button class="tab-button" onclick="switchTab('recipes', event)">🍳 Recipes</button>
+            <button class="tab-button" onclick="switchTab('export', event)">📦 Export</button>
+        </div>
+
+        <!-- Custom Items Tab -->
+        <div id="items-tab" class="tab-content active">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Custom Items (<span id="item-count">0</span>)</h2>
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn btn-secondary" onclick="importItemsJSON()">📁 Import JSON</button>
+                        <button class="btn btn-primary" onclick="addNewItem()">+ Add Item</button>
+                    </div>
+                </div>
+                <div id="items-list" class="item-list"></div>
+                <div id="items-empty" class="empty-state" style="display: none;">
+                    <div class="empty-state-icon">🍔</div>
+                    <h3>No custom items yet</h3>
+                    <p>Click "Add Item" to create your first custom food item!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recipes Tab -->
+        <div id="recipes-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Recipes (<span id="recipe-count">0</span>)</h2>
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn btn-secondary" onclick="importRecipesJSON()">📁 Import JSON</button>
+                        <button class="btn btn-primary" onclick="addNewRecipe()">+ Add Recipe</button>
+                    </div>
+                </div>
+                <div id="recipes-list" class="item-list"></div>
+                <div id="recipes-empty" class="empty-state" style="display: none;">
+                    <div class="empty-state-icon">🍳</div>
+                    <h3>No recipes yet</h3>
+                    <p>Click "Add Recipe" to create your first cooking recipe!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Tab -->
+        <div id="export-tab" class="tab-content">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">📦 Export Configuration</h2>
+                </div>
+                
+                <h3 style="margin-bottom: 1rem;">Custom Items JSON</h3>
+                <div class="output-actions">
+                    <button class="btn btn-primary" onclick="copyItemsJSON()">📋 Copy</button>
+                    <button class="btn btn-primary" onclick="downloadItemsJSON()">⬇️ Download</button>
+                </div>
+                <div class="json-output">
+                    <pre id="items-json-output">{}</pre>
+                </div>
+
+                <h3 style="margin: 2rem 0 1rem;">Recipes JSON</h3>
+                <div class="output-actions">
+                    <button class="btn btn-primary" onclick="copyRecipesJSON()">📋 Copy</button>
+                    <button class="btn btn-primary" onclick="downloadRecipesJSON()">⬇️ Download</button>
+                </div>
+                <div class="json-output">
+                    <pre id="recipes-json-output">{}</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Item Editor Modal -->
+    <div id="item-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="item-modal-title">Add Custom Item</h2>
+                <button class="close-btn" onclick="closeItemModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div id="item-form"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeItemModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveItem()">Save Item</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recipe Editor Modal -->
+    <div id="recipe-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="recipe-modal-title">Add Recipe</h2>
+                <button class="close-btn" onclick="closeRecipeModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div id="recipe-form"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeRecipeModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveRecipe()">Save Recipe</button>
+            </div>
+        </div>
+    </div>
+
+    <input type="file" id="file-input" style="display: none;" accept=".json">
+
+    <!-- Paste JSON Modal -->
+    <div id="paste-modal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <div class="modal-header">
+                <h2 class="modal-title" id="paste-modal-title">Paste JSON</h2>
+                <button class="close-btn" onclick="closePasteModal()">✕</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Paste your JSON here:</label>
+                    <textarea id="paste-json-textarea" style="min-height: 300px; font-family: monospace;" placeholder='{"custom_items": [...]} or {"recipes": [...]}'></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closePasteModal()">Cancel</button>
+                <button class="btn btn-primary" onclick="importFromPaste()">Import</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Storage
+        let customItems = [];
+        let recipes = [];
+        let currentEditingItem = null;
+        let currentEditingRecipe = null;
+        let tempIngredients = [];
+        let tempActions = [];
+        let tempRules = [];
+        let pasteMode = 'items'; // Track whether we're pasting items or recipes
+
+        // Common vanilla items for quick reference
+        const COMMON_VANILLA_ITEMS = [
+            'BREAD', 'APPLE', 'GOLDEN_APPLE', 'CARROT', 'POTATO', 'BAKED_POTATO',
+            'BEETROOT', 'SWEET_BERRIES', 'GLOW_BERRIES', 'MELON_SLICE',
+            'EGG', 'MILK_BUCKET', 'WATER_BUCKET', 'SUGAR', 'COCOA_BEANS',
+            'WHEAT', 'PUMPKIN', 'MUSHROOM_STEW', 'PORKCHOP', 'COOKED_PORKCHOP',
+            'BEEF', 'COOKED_BEEF', 'CHICKEN', 'COOKED_CHICKEN', 'MUTTON', 'COOKED_MUTTON',
+            'RABBIT', 'COOKED_RABBIT', 'COD', 'COOKED_COD', 'SALMON', 'COOKED_SALMON',
+            'BROWN_MUSHROOM', 'RED_MUSHROOM', 'DRIED_KELP', 'KELP', 'BOWL', 'GLASS_BOTTLE',
+            'HONEY_BOTTLE', 'CHORUS_FRUIT', 'STICK', 'PAPER', 'BUCKET', 'SUNFLOWER', 'DARK_OAK_LEAVES',
+            'ICE', 'PACKED_ICE', 'TROPICAL_FISH'
+        ];
+
+        // PRE-LOADED DATA - Your existing custom items and recipes
+        function loadInitialData() {
+            // Load your custom items
+            customItems = INITIAL_CUSTOM_ITEMS;
+            
+            // Load your recipes
+            recipes = INITIAL_RECIPES;
+        }
+
+        const INITIAL_CUSTOM_ITEMS = [
+            {"id":"DOUGH","name":"§fDough","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/8166d79de64abb4457ab87fa8f6706d55ce682e10db849ea6dd124095b12276e","edible":false},
+            {"id":"CHEESE","name":"§eCheese","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/d089bda72e1985324f3014932cde0241f9f38ddb98f07358b93413d80e5ac0ed","edible":true,"food_value":3,"saturation":2.0},
+            {"id":"MINCED_MEAT","name":"§cMinced Meat","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/518253f3a68b4ab3e5d36c97456a2b2fc79a68662c30184a57dd6be151f0bcb9","edible":false},
+            {"id":"BACON","name":"§cBacon","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/e7ba22d5df21e821a6de4b8c9d373a3aa187d8ae74f288a82d2b61f272e5","edible":true,"food_value":4,"saturation":3.0},
+            {"id":"TOMATO","name":"§cTomato","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/4f14b58f3df65a0c6b90ee19464b2557c83ae2c9fa1b5738bb11364cd9f5b3e1","edible":true,"food_value":3,"saturation":1.5},
+            {"id":"CORN","name":"§6Corn","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/d3a6b099cd401e3a0d64d9a16f46cd0c5ca5f7e45e6a69c27d2e473775b25fe","edible":true,"food_value":3,"saturation":2.0},
+            {"id":"LETTUCE","name":"§aLettuce","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/9979fe7b32fb7fc9746e157471f975f31afcb58fd8b5acb8bf53ec350f4d5c2","edible":true,"food_value":1,"saturation":0.5},
+            {"id":"CANNED_TOMATOES","name":"§cCanned Tomatoes","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/e95393bbf39df23ef45155f5128f2cde811400a775d33cab0590feea99323735","edible":false},
+            {"id":"TACO_SHELL","name":"§6Taco Shell","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/a0d5aa4469f492e6f0c9551d9b64dc8e5a5865b31a9a7e13783f57b16f708ac","edible":false},
+            {"id":"VINEGAR","name":"§7Vinegar","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/aa05e4d9c78486646995cf94e61013c71746696cebdc97ac45aec377f05a3e77","edible":false},
+            {"id":"SAUCE","name":"§cSauce","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/c0b8b5889ee1c6388dc6c2c5dbd70b6984aefe54319a095e64db7638097b821","edible":false},
+            {"id":"HEAVY_CREAM","name":"§fHeavy Cream","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/aa05e4d9c78486646995cf94e61013c71746696cebdc97ac45aec377f05a3e77","edible":false},
+            {"id":"BAG_OF_FLOUR","name":"§fBag of Flour","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/b1e51a9be4d179aeb549f4ecb8a6c43a594ceb15bf3b2db5317eab78010f3210","edible":false},
+            {"id":"CORNMEAL","name":"§6Cornmeal","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/f52caed35a371ba727f2a6179decdbd1bb8130584aded8ca91c54900c7e9ee1c","edible":false},
+            {"id":"PLANT_PROTEIN","name":"§aPlant Protein","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/bb8e5237076dcd41f48aaead0553e2b555f469ac989d229e1c58b8bc95efbb0","edible":true,"food_value":5,"saturation":3.5},
+            {"id":"FRIED_EGG","name":"§eFried Egg","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/925b5d8e75c23847d20bdd90451dce0e49b51315c870b8f9b60958678ff56074","edible":true,"food_value":4,"saturation":2.5},
+            {"id":"RICE","name":"§fRice","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/cb70f2fb5ebf49f79ff3e873616863ae5d362fbbfc31aef2dfb93d6e17dbf2","edible":true,"food_value":2,"saturation":1.5},
+            {"id":"DOUGHNUT","name":"§6Doughnut","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/edc97f8a5d25d6b6c1c51e6fce2ee2e6cb8ac716e52e062ffcc5e6a6e3d8e5","edible":true,"food_value":6,"saturation":3.0},
+            {"id":"SALT","name":"§fSalt","base_material":"SUGAR","edible":false},
+            {"id":"BAKING_POWDER","name":"§fBaking Powder","base_material":"SUGAR","edible":false},
+            {"id":"BUTTER","name":"§eButter","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/b66b19f7d635d03473891df33017c549363209a8f6328a8542c213d08525e","edible":true,"food_value":1,"saturation":0.5},
+            {"id":"FLATBREAD","name":"§fFlatbread","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/a0d5aa4469f492e6f0c9551d9b64dc8e5a5865b31a9a7e13783f57b16f708ac","edible":true,"food_value":5,"saturation":3.0},
+            {"id":"BREAD","name":"§fBread","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/baa9e797265d38abc02856834e37f636fe316feeb55a4a0df052ac2ffea46f99","edible":true,"food_value":6,"saturation":4.0},
+            {"id":"DRY_PASTA","name":"§fDry Pasta","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/6dc55f43e3d8420975189a70fea4df7791e4e100b4163d615b9c0d20b1dfb2be","edible":false},
+            {"id":"PASTA_BOLOGNESE","name":"§cPasta Bolognese","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/f23dfd4ce57786914968a2b3ba82173ba7c6cb8bc08442d4130cb09c4a000980","edible":true,"food_value":10,"saturation":8.0},
+            {"id":"EGGS_AND_BACON","name":"§eEggs and Bacon","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/925b5d8e75c23847d20bdd90451dce0e49b51315c870b8f9b60958678ff56074","edible":true,"food_value":8,"saturation":6.0},
+            {"id":"POPCORN","name":"§ePopcorn","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/8aece42d5eaddd6fc9158b64a83e74b94547ee1b36abce4451b5c87889b417b5","edible":true,"food_value":4,"saturation":2.0},
+            {"id":"GRILLED_CHEESE","name":"§6Grilled Cheese","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/99f46993d615c8face3be1292b3badf897346a3de06bf847ea66d9a6974a14ff","edible":true,"food_value":7,"saturation":5.0},
+            {"id":"FRENCH_TOAST","name":"§6French Toast","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/6f420de78df981581033fd633e3dc909e93fa7918fe028c73f9082c4dc6c8b70","edible":true,"food_value":8,"saturation":6.0},
+            {"id":"OMELETTE","name":"§eOmelette","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/925b5d8e75c23847d20bdd90451dce0e49b51315c870b8f9b60958678ff56074","edible":true,"food_value":6,"saturation":4.0},
+            {"id":"TOMATO_SOUP","name":"§cTomato Soup","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/c0b8b5889ee1c6388dc6c2c5dbd70b6984aefe54319a095e64db7638097b821","edible":true,"food_value":6,"saturation":4.0},
+            {"id":"MASHED_POTATOES","name":"§fMashed Potatoes","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/b1e51a9be4d179aeb549f4ecb8a6c43a594ceb15bf3b2db5317eab78010f3210","edible":true,"food_value":5,"saturation":4.0},
+            {"id":"CHOCOLATE","name":"§6Chocolate","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/819f948d17718adace5dd6e050c586229653fef645d7113ab94d17b639cc466","edible":true,"food_value":4,"saturation":2.0},
+            {"id":"PANCAKES","name":"§ePancakes","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/f8451668392022a3f77833c841c2b3178ce11a9c9750461e51dfa12e01c3b1b7","edible":true,"food_value":7,"saturation":5.0},
+            {"id":"COOKED_RICE","name":"§fCooked Rice","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/cb70f2fb5ebf49f79ff3e873616863ae5d362fbbfc31aef2dfb93d6e17dbf2","edible":true,"food_value":4,"saturation":3.0},
+            {"id":"HAMBURGER","name":"§6Hamburger","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/e1b0e992037ae3793e46e1fb255204c020504603ce9e8e40813197085d905556","edible":true,"food_value":10,"saturation":8.0},
+            {"id":"PIZZA","name":"§cPizza","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/d6fa7f4c43c1cb19a8046620d9f43b88cce7fc507eb843329c0fc6e66eac3e63","edible":true,"food_value":10,"saturation":8.0},
+            {"id":"SUSHI","name":"§dSushi","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/169bb90e1788fee95af3f69ca1f884874646bc9f01a237cd79968ca949bddec4","edible":true,"food_value":6,"saturation":4.0},
+            {"id":"JAM","name":"§dJam","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/c0b8b5889ee1c6388dc6c2c5dbd70b6984aefe54319a095e64db7638097b821","edible":true,"food_value":3,"saturation":2.0},
+            {"id":"SALAD","name":"§aSalad","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/9979fe7b32fb7fc9746e157471f975f31afcb58fd8b5acb8bf53ec350f4d5c2","edible":true,"food_value":5,"saturation":3.0},
+            {"id":"FRIED_RICE","name":"§eFried Rice","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/b1e51a9be4d179aeb549f4ecb8a6c43a594ceb15bf3b2db5317eab78010f3210","edible":true,"food_value":8,"saturation":6.0},
+            {"id":"FRIES","name":"§eFries","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/d3a6b099cd401e3a0d64d9a16f46cd0c5ca5f7e45e6a69c27d2e473775b25fe","edible":true,"food_value":5,"saturation":3.0},
+            {"id":"ICE_CREAM","name":"§fIce Cream","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/a284dacadc276e00d83a305d8096fbc2fb4baa3515616317babd7aa4a66da1b0","edible":true,"food_value":4,"saturation":2.0},
+            {"id":"COOKING_OIL","name":"§eOil","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/aa05e4d9c78486646995cf94e61013c71746696cebdc97ac45aec377f05a3e77","edible":false},
+            {"id":"FRIED_CHICKEN","name":"§6Fried Chicken","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/e7ba22d5df21e821a6de4b8c9d373a3aa187d8ae74f288a82d2b61f272e5","edible":true,"food_value":8,"saturation":6.0},
+            {"id":"MAC_AND_CHEESE","name":"§eMac & Cheese","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/18cea8399f4443aeb815c5019ca7452106bbc9207947ddcc3b7f0f9e536bc089","edible":true,"food_value":8,"saturation":6.0},
+            {"id":"LASAGNA","name":"§cLasagna","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/58d583d3f6a12476359ef8288b60ba355e32a3a4d97bc852323ce74c89e45143","edible":true,"food_value":12,"saturation":10.0},
+            {"id":"CARBONARA","name":"§fCarbonara","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/8c97623aab35fdd26bee7d05574c9c3891983fb70ee21b9a4c2b04d796cf3e67","edible":true,"food_value":10,"saturation":8.0},
+            {"id":"TACO","name":"§6Taco","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/eb16c1e717760e8942aeb6b1757eff48d927a06ff1efbb4371eab678ebab4290","edible":true,"food_value":8,"saturation":6.0},
+            {"id":"BLT","name":"§6BLT Sandwich","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/baa9e797265d38abc02856834e37f636fe316feeb55a4a0df052ac2ffea46f99","edible":true,"food_value":8,"saturation":6.0},
+            {"id":"FISH_AND_CHIPS","name":"§eFish and Chips","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/d6fa7f4c43c1cb19a8046620d9f43b88cce7fc507eb843329c0fc6e66eac3e63","edible":true,"food_value":10,"saturation":8.0},
+            {"id":"EMPTY_CAN","name":"§7Empty Can","base_material":"PLAYER_HEAD","texture":"http://textures.minecraft.net/texture/b983aa3e7719d5888943322310197c4eaadf91f9971a667eefc45bcb606ac872","edible":false}
+        ];
+
+        const INITIAL_RECIPES = [
+            {"id":"JAM","station":"BOILING_POT","output":"JAM","processing_time":150,"ingredients":[{"type":"REQUIRED","max":3,"options":[{"item":"SWEET_BERRIES"},{"item":"GLOW_BERRIES"},{"item":"APPLE"},{"item":"GOLDEN_APPLE"},{"item":"MELON_SLICE"},{"item":"CHORUS_FRUIT"}]},{"type":"REQUIRED","max":1,"options":[{"item":"SUGAR"}]},{"type":"REQUIRED","max":1,"options":[{"item":"GLASS_BOTTLE"}]}],"actions":[{"type":"SET_PROPERTY","key":"NAME","value":"Jam"},{"type":"SET_TEXTURE","value":"http://textures.minecraft.net/texture/c0b8b5889ee1c6388dc6c2c5dbd70b6984aefe54319a095e64db7638097b821"},{"type":"SET_CONSUME_RETURN","value":"GLASS_BOTTLE"}],"rules":[{"trigger":"HAS_INPUT","matcher":{"item":"APPLE"},"actions":[{"type":"SET_PROPERTY","key":"NAME","value":"Apple Jam"},{"type":"SET_TEXTURE","value":"http://textures.minecraft.net/texture/c0b8b5889ee1c6388dc6c2c5dbd70b6984aefe54319a095e64db7638097b821"}]},{"trigger":"INPUT_COUNT_GTE","slot_index":0,"count":2,"actions":[{"type":"APPEND_NAME","value":" (Mixed)"}]}]},
+            {"id":"PIZZA","station":"OVEN","output":"PIZZA","processing_time":150,"ingredients":[{"type":"REQUIRED","max":1,"options":[{"custom_item":"DOUGH"}]},{"type":"REQUIRED","max":1,"options":[{"custom_item":"CHEESE"}]},{"type":"REQUIRED","max":1,"options":[{"custom_item":"CANNED_TOMATOES"}]},{"type":"OPTIONAL","max":4,"options":[{"custom_item":"MINCED_MEAT"},{"custom_item":"BACON"},{"item":"BROWN_MUSHROOM"},{"item":"RED_MUSHROOM"},{"custom_item":"TOMATO"},{"custom_item":"CORN"}]}],"actions":[{"type":"SET_PROPERTY","key":"NAME","value":"Pizza"},{"type":"SET_TEXTURE","value":"http://textures.minecraft.net/texture/d6fa7f4c43c1cb19a8046620d9f43b88cce7fc507eb843329c0fc6e66eac3e63"},{"type":"SET_QUALITY","value":"0.3"}],"rules":[{"trigger":"HAS_INPUT","matcher":{"custom_item":"MINCED_MEAT"},"actions":[{"type":"SET_PROPERTY","key":"NAME","value":"Meat Lovers Pizza"}]}]},
+            {"id":"DOUGH","station":"MIXING_BOWL","output":"DOUGH","processing_time":0,"ingredients":[{"type":"REQUIRED","max":1,"options":[{"custom_item":"BAG_OF_FLOUR"},{"custom_item":"CORNMEAL"}]},{"type":"REQUIRED","max":1,"options":[{"item":"WATER_BUCKET"}]},{"type":"OPTIONAL","max":1,"options":[{"item":"EGG"}]},{"type":"OPTIONAL","max":1,"options":[{"custom_item":"BAKING_POWDER"}]},{"type":"OPTIONAL","max":1,"options":[{"item":"SUGAR"}]},{"type":"OPTIONAL","max":1,"options":[{"item":"BROWN_MUSHROOM"}]},{"type":"OPTIONAL","max":1,"options":[{"custom_item":"BUTTER"}]}],"actions":[{"type":"SET_PROPERTY","key":"NAME","value":"Dough"},{"type":"SET_TEXTURE","value":"http://textures.minecraft.net/texture/8166d79de64abb4457ab87fa8f6706d55ce682e10db849ea6dd124095b12276e"},{"type":"SET_RETURN_ITEM","value":"BUCKET"},{"type":"SET_QUALITY","value":"0.3"}],"rules":[{"trigger":"HAS_INPUT","matcher":{"item":"BROWN_MUSHROOM"},"actions":[{"type":"ADD_CONTAINS","value":"YEAST"},{"type":"ADD_QUALITY","value":"0.1"},{"type":"SET_PROPERTY","key":"NAME","value":"Yeasted Dough"}]}]},
+            {"id":"CHEESE","station":"BOILING_POT","output":"CHEESE","processing_time":150,"ingredients":[{"type":"REQUIRED","max":1,"options":[{"item":"MILK_BUCKET"}]},{"type":"REQUIRED","max":1,"options":[{"custom_item":"VINEGAR"}]}],"actions":[{"type":"SET_QUALITY","value":"0.5"},{"type":"SET_RETURN_ITEM","value":"BUCKET"}],"rules":[]},
+            {"id":"FLOUR","station":"CUTTING_BOARD","output":"BAG_OF_FLOUR","processing_time":0,"ingredients":[{"type":"REQUIRED","max":1,"options":[{"item":"WHEAT"}]}],"actions":[],"rules":[]},
+            {"id":"HAMBURGER","station":"FRYING_PAN","output":"HAMBURGER","processing_time":100,"ingredients":[{"type":"REQUIRED","max":1,"options":[{"custom_item":"MINCED_MEAT"},{"custom_item":"PLANT_PROTEIN"}]},{"type":"REQUIRED","max":1,"options":[{"custom_item":"BREAD"},{"item":"BREAD"}]},{"type":"REQUIRED","max":1,"options":[{"custom_item":"TOMATO"}]},{"type":"REQUIRED","max":1,"options":[{"custom_item":"CHEESE"}]},{"type":"OPTIONAL","max":1,"options":[{"custom_item":"BACON"}]},{"type":"OPTIONAL","max":1,"options":[{"custom_item":"LETTUCE"}]}],"actions":[{"type":"SET_PROPERTY","key":"NAME","value":"Hamburger"},{"type":"SET_QUALITY","value":"0.5"}],"rules":[{"trigger":"HAS_INPUT","matcher":{"custom_item":"PLANT_PROTEIN"},"actions":[{"type":"SET_PROPERTY","key":"NAME","value":"§aPlant Burger"}]}]},
+            {"id":"SALAD","station":"MIXING_BOWL","output":"SALAD","processing_time":0,"ingredients":[{"type":"REQUIRED","max":2,"options":[{"custom_item":"LETTUCE"}]},{"type":"OPTIONAL","max":4,"options":[{"custom_item":"TOMATO"},{"custom_item":"CORN"},{"item":"CARROT"},{"item":"APPLE"}]}],"actions":[{"type":"SET_PROPERTY","key":"NAME","value":"Garden Salad"},{"type":"SET_CONSUME_RETURN","value":"BOWL"}],"rules":[]}
+        ];
+
+        // Initialize
+        function init() {
+            loadInitialData();
+            renderItems();
+            renderRecipes();
+            updateExport();
+            updateCounts();
+        }
+
+        function updateCounts() {
+            document.getElementById('item-count').textContent = customItems.length;
+            document.getElementById('recipe-count').textContent = recipes.length;
+        }
+
+        // Tab Switching
+        function switchTab(tab, evt) {
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            if (evt) evt.target.classList.add('active');
+            document.getElementById(`${tab}-tab`).classList.add('active');
+            
+            if (tab === 'export') {
+                updateExport();
+            }
+        }
+
+        // CUSTOM ITEMS FUNCTIONS
+        // Get Minecraft item icon URL
+        function getMinecraftItemIconUrl(itemId) {
+            return `https://assets.mcasset.cloud/1.20.4/assets/minecraft/textures/item/${itemId.toLowerCase()}.png`;
+        }
+
+        function renderItems() {
+            const container = document.getElementById('items-list');
+            const empty = document.getElementById('items-empty');
+            
+            if (customItems.length === 0) {
+                container.style.display = 'none';
+                empty.style.display = 'block';
+                return;
+            }
+            
+            container.style.display = 'grid';
+            empty.style.display = 'none';
+            
+            container.innerHTML = customItems.map((item, index) => {
+                let iconHTML;
+                if (item.base_material === 'PLAYER_HEAD' && item.texture) {
+                    // Use canvas with unique ID for custom isometric rendering
+                    const canvasId = `head-${index}-${Date.now()}`;
+                    iconHTML = `<canvas id="${canvasId}" class="pending-head-render" data-texture="${item.texture}" width="64" height="64" style="image-rendering: pixelated;"></canvas>`;
+                } else if (item.base_material && item.base_material !== 'PLAYER_HEAD') {
+                    // Show Minecraft item icon for non-player-head items
+                    const iconUrl = getMinecraftItemIconUrl(item.base_material);
+                    iconHTML = `<img src="${iconUrl}" style="image-rendering: pixelated;" onerror="this.style.display='none'; this.parentElement.innerHTML='🍔';">`;
+                } else {
+                    iconHTML = `<span class="placeholder">🍔</span>`;
+                }
+                
+                const foodBadge = item.edible 
+                    ? `<span class="badge badge-success">Edible</span>`
+                    : `<span class="badge badge-info">Ingredient</span>`;
+                
+                return `
+                    <div class="item-card" onclick="editItem(${index})">
+                        <div class="item-icon">${iconHTML}</div>
+                        <div class="item-info">
+                            <div class="item-name">${stripColorCodes(item.name || item.id)}</div>
+                            <div class="item-id">${item.id}</div>
+                            ${foodBadge}
+                        </div>
+                        <div class="item-actions" onclick="event.stopPropagation()">
+                            <button class="icon-btn" onclick="duplicateItem(${index})" title="Duplicate">📋</button>
+                            <button class="icon-btn" onclick="deleteItem(${index})" title="Delete">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Render all pending head icons
+            setTimeout(() => renderAllHeads(), 100);
+        }
+        
+        // Helper to get pixel color from image
+        function getPixelColor(img, x, y) {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = img.width;
+            tempCanvas.height = img.height;
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCtx.drawImage(img, 0, 0);
+            const pixel = tempCtx.getImageData(x, y, 1, 1).data;
+            return `rgba(${pixel[0]}, ${pixel[1]}, ${pixel[2]}, ${pixel[3]/255})`;
+        }
+        
+        // Render 2D head face cleanly from texture
+        function renderIsometricHead(textureImg, canvas) {
+            const ctx = canvas.getContext('2d');
+            ctx.imageSmoothingEnabled = false;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Simply extract the front face (8x8 pixels at position 8,8) and scale it up
+            // This gives a clean, pixelated 2D view
+            ctx.drawImage(textureImg, 8, 8, 8, 8, 0, 0, 64, 64);
+        }
+        
+        // Darken a color for shading
+        function darkenColor(rgba, factor) {
+            const match = rgba.match(/rgba?\((\d+), (\d+), (\d+),? ?([0-9.]+)?\)/);
+            if (match) {
+                const r = Math.floor(match[1] * factor);
+                const g = Math.floor(match[2] * factor);
+                const b = Math.floor(match[3] * factor);
+                const a = match[4] || 1;
+                return `rgba(${r}, ${g}, ${b}, ${a})`;
+            }
+            return rgba;
+        }
+        
+        // Render all pending head canvases
+        function renderAllHeads() {
+            document.querySelectorAll('.pending-head-render').forEach(canvas => {
+                const textureUrl = canvas.dataset.texture;
+                
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => {
+                    // Check dimensions: 64x64 = full skin, 64x32 = head-only
+                    if (img.width === 64 && img.height === 64) {
+                        // Full skin - try mc-heads.net for 3D isometric
+                        const match = textureUrl.match(/texture\/([a-f0-9]+)/i);
+                        if (match) {
+                            const newImg = document.createElement('img');
+                            newImg.src = `https://mc-heads.net/head/${match[1]}/64`;
+                            newImg.style.imageRendering = 'pixelated';
+                            canvas.replaceWith(newImg);
+                        }
+                    } else {
+                        // Head-only texture (64x32) - use custom isometric renderer
+                        renderIsometricHead(img, canvas);
+                    }
+                };
+                img.onerror = () => {
+                    canvas.parentElement.innerHTML = '🍔';
+                };
+                img.src = textureUrl;
+            });
+        }
+
+        function addNewItem() {
+            currentEditingItem = null;
+            showItemEditor({
+                id: '',
+                name: '',
+                base_material: 'PLAYER_HEAD',
+                texture: '',
+                edible: false,
+                food_value: 4,
+                saturation: 2.0
+            });
+        }
+
+        function editItem(index) {
+            currentEditingItem = index;
+            showItemEditor(customItems[index]);
+        }
+
+        function showItemEditor(item) {
+            document.getElementById('item-modal-title').textContent = 
+                currentEditingItem === null ? 'Add Custom Item' : `Edit: ${item.id}`;
+            
+            document.getElementById('item-form').innerHTML = `
+                <div class="form-group">
+                    <label>Item ID *</label>
+                    <input type="text" id="item-id" value="${item.id}" placeholder="e.g., CHEESE" style="text-transform: uppercase;">
+                    <p class="help-text">Unique identifier in UPPERCASE_SNAKE_CASE</p>
+                </div>
+
+                <div class="form-group">
+                    <label>Display Name *</label>
+                    <input type="text" id="item-name" value="${item.name}" placeholder="e.g., §eCheese">
+                    <p class="help-text">Use § for Minecraft color codes (§a=green, §c=red, §e=yellow, §f=white)</p>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Base Material *</label>
+                        <select id="item-base-material" onchange="toggleTextureField()">
+                            <option value="PLAYER_HEAD" ${item.base_material === 'PLAYER_HEAD' ? 'selected' : ''}>Player Head (Custom Texture)</option>
+                            <option value="SUGAR" ${item.base_material === 'SUGAR' ? 'selected' : ''}>Sugar</option>
+                            <option value="PAPER" ${item.base_material === 'PAPER' ? 'selected' : ''}>Paper</option>
+                            <option value="STICK" ${item.base_material === 'STICK' ? 'selected' : ''}>Stick</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-group">
+                            <input type="checkbox" id="item-edible" ${item.edible ? 'checked' : ''} onchange="toggleFoodFields()">
+                            <span>Edible</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group" id="texture-field" style="${item.base_material === 'PLAYER_HEAD' ? '' : 'display: none;'}">
+                    <label>Texture URL</label>
+                    <input type="url" id="item-texture" value="${item.texture || ''}" 
+                        placeholder="http://textures.minecraft.net/texture/..." 
+                        oninput="updateItemPreview()">
+                    <p class="help-text">Get texture URLs from minecraft-heads.com</p>
+                </div>
+
+                <div id="food-fields" style="${item.edible ? '' : 'display: none;'}">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Food Value (Hunger)</label>
+                            <input type="number" id="item-food-value" value="${item.food_value || 4}" min="1" max="20" step="1">
+                            <p class="help-text">Number of hunger points restored</p>
+                        </div>
+                        <div class="form-group">
+                            <label>Saturation</label>
+                            <input type="number" id="item-saturation" value="${item.saturation || 2.0}" min="0" max="20" step="0.5">
+                            <p class="help-text">Saturation value (usually half of food value)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="head-preview-container" id="item-preview-container" style="${item.base_material === 'PLAYER_HEAD' ? '' : 'display: none;'}">
+                    <div class="head-preview">
+                        <div class="head-preview-label">🎨 Item Preview</div>
+                        <div class="head-preview-box" id="item-preview-box">
+                            ${item.texture ? `<canvas id="item-preview-canvas" width="128" height="128"></canvas>` : '<span>No texture</span>'}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('item-modal').style.display = 'block';
+            
+            // Update preview with correct rendering logic
+            if (item.base_material === 'PLAYER_HEAD' && item.texture) {
+                updateItemPreview();
+            }
+        }
+
+        function toggleTextureField() {
+            const material = document.getElementById('item-base-material').value;
+            const textureField = document.getElementById('texture-field');
+            const previewContainer = document.getElementById('item-preview-container');
+            const isPlayerHead = material === 'PLAYER_HEAD';
+            
+            textureField.style.display = isPlayerHead ? 'block' : 'none';
+            previewContainer.style.display = isPlayerHead ? 'flex' : 'none';
+            
+            if (isPlayerHead) {
+                updateItemPreview();
+            }
+        }
+
+        function toggleFoodFields() {
+            const edible = document.getElementById('item-edible').checked;
+            document.getElementById('food-fields').style.display = edible ? 'block' : 'none';
+        }
+
+        function updateItemPreview() {
+            const texture = document.getElementById('item-texture').value;
+            const previewBox = document.getElementById('item-preview-box');
+            
+            if (!texture) {
+                previewBox.innerHTML = '<span>No texture</span>';
+                previewBox.className = 'head-preview-box empty';
+                return;
+            }
+            
+            const match = texture.match(/texture\/([a-f0-9]+)/i);
+            if (!match) {
+                previewBox.innerHTML = '<span>Invalid URL</span>';
+                previewBox.className = 'head-preview-box empty';
+                return;
+            }
+            
+            // Create canvas for rendering
+            previewBox.className = 'head-preview-box';
+            previewBox.innerHTML = '<canvas id="item-preview-canvas" width="128" height="128"></canvas>';
+            const canvas = document.getElementById('item-preview-canvas');
+            
+            // Load texture to check dimensions
+            const img = new Image();
+            img.crossOrigin = "Anonymous";
+            img.src = texture;
+            
+            img.onload = () => {
+                const ctx = canvas.getContext('2d');
+                ctx.imageSmoothingEnabled = false;
+                
+                if (img.width === 64 && img.height === 64) {
+                    // Standard 64x64 skin - use mc-heads.net for 3D isometric
+                    const headImg = new Image();
+                    headImg.crossOrigin = "Anonymous";
+                    headImg.src = `https://mc-heads.net/head/${match[1]}/128`;
+                    headImg.onload = () => {
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(headImg, 0, 0, 128, 128);
+                    };
+                    headImg.onerror = () => {
+                        // Fallback to 2D render if mc-heads fails
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 8, 8, 8, 8, 0, 0, 128, 128);
+                    };
+                } else if (img.width === 64 && img.height === 32) {
+                    // Head-only texture (like Bacon/Butter) - render 2D front face
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, 8, 8, 8, 8, 0, 0, 128, 128);
+                } else {
+                    // Unexpected dimensions - render what we can
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    const size = Math.min(img.width, img.height);
+                    ctx.drawImage(img, 0, 0, size, size, 0, 0, 128, 128);
+                }
+            };
+            
+            img.onerror = () => {
+                previewBox.innerHTML = '<span>Invalid texture</span>';
+                previewBox.className = 'head-preview-box empty';
+            };
+        }
+
+        function getHeadIconUrl(textureUrl, size = 64) {
+            // Use mc-heads.net which accepts texture hashes directly
+            const match = textureUrl.match(/texture\/([a-f0-9]+)/i);
+            if (match) {
+                const textureId = match[1];
+                // Use mc-heads.net head endpoint for nice isometric rendering
+                return `https://mc-heads.net/head/${textureId}/${size}`;
+            }
+            return '';
+        }
+        
+        function getDirectTextureUrl(textureUrl) {
+            // For fallback: use the raw texture PNG directly
+            return textureUrl;
+        }
+        
+        function handleIconError(img) {
+            // If loading from mc-heads.net failed, try the direct texture URL
+            if (img.src.includes('mc-heads.net') && img.dataset.fallback) {
+                img.src = img.dataset.fallback;
+                // Style it nicely as a flat texture
+                img.style.width = '64px';
+                img.style.height = '64px';
+                img.style.objectFit = 'cover';
+                img.style.imageRendering = 'pixelated';
+            } else {
+                // Ultimate fallback: hide and show emoji
+                img.style.display = 'none';
+                img.parentElement.innerHTML = '🍔';
+            }
+        }
+
+        function saveItem() {
+            const item = {
+                id: document.getElementById('item-id').value.toUpperCase().trim(),
+                name: document.getElementById('item-name').value.trim(),
+                base_material: document.getElementById('item-base-material').value,
+                edible: document.getElementById('item-edible').checked
+            };
+
+            if (!item.id || !item.name) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            if (item.base_material === 'PLAYER_HEAD') {
+                const texture = document.getElementById('item-texture').value.trim();
+                if (texture) {
+                    item.texture = texture;
+                }
+            }
+
+            if (item.edible) {
+                item.food_value = parseInt(document.getElementById('item-food-value').value);
+                item.saturation = parseFloat(document.getElementById('item-saturation').value);
+            }
+
+            if (currentEditingItem === null) {
+                customItems.push(item);
+            } else {
+                customItems[currentEditingItem] = item;
+            }
+
+            closeItemModal();
+            renderItems();
+            updateExport();
+            updateCounts();
+        }
+
+        function duplicateItem(index) {
+            const item = JSON.parse(JSON.stringify(customItems[index]));
+            item.id = item.id + '_COPY';
+            customItems.push(item);
+            renderItems();
+            updateExport();
+            updateCounts();
+        }
+
+        function deleteItem(index) {
+            if (confirm(`Delete ${customItems[index].id}?`)) {
+                customItems.splice(index, 1);
+                renderItems();
+                updateExport();
+                updateCounts();
+            }
+        }
+
+        function closeItemModal() {
+            document.getElementById('item-modal').style.display = 'none';
+        }
+
+        // RECIPE FUNCTIONS
+        function renderRecipes() {
+            const container = document.getElementById('recipes-list');
+            const empty = document.getElementById('recipes-empty');
+            
+            if (recipes.length === 0) {
+                container.style.display = 'none';
+                empty.style.display = 'block';
+                return;
+            }
+            
+            container.style.display = 'grid';
+            empty.style.display = 'none';
+            
+            container.innerHTML = recipes.map((recipe, index) => {
+                const outputItem = customItems.find(i => i.id === recipe.output);
+                let iconHTML;
+                
+                if (outputItem) {
+                    // Custom item
+                    if (outputItem.base_material === 'PLAYER_HEAD' && outputItem.texture) {
+                        // Use canvas for custom isometric rendering
+                        const canvasId = `recipe-head-${index}-${Date.now()}`;
+                        iconHTML = `<canvas id="${canvasId}" class="pending-head-render" data-texture="${outputItem.texture}" width="64" height="64" style="image-rendering: pixelated;"></canvas>`;
+                    } else if (outputItem.base_material && outputItem.base_material !== 'PLAYER_HEAD') {
+                        // Non-player-head custom item (like SALT/SUGAR)
+                        const iconUrl = getMinecraftItemIconUrl(outputItem.base_material);
+                        iconHTML = `<img src="${iconUrl}" style="image-rendering: pixelated;" onerror="this.style.display='none'; this.parentElement.innerHTML='🍳';">`;
+                    } else {
+                        iconHTML = `<span class="placeholder">🍳</span>`;
+                    }
+                } else {
+                    // Assume it's a vanilla item
+                    const iconUrl = getMinecraftItemIconUrl(recipe.output);
+                    iconHTML = `<img src="${iconUrl}" style="image-rendering: pixelated;" onerror="this.style.display='none'; this.parentElement.innerHTML='🍳';">`;
+                }
+                
+                return `
+                    <div class="item-card" onclick="editRecipe(${index})">
+                        <div class="item-icon">${iconHTML}</div>
+                        <div class="item-info">
+                            <div class="item-name">${recipe.id}</div>
+                            <div class="item-id">${recipe.station} • ${recipe.processing_time}s</div>
+                            <span class="badge badge-info">${recipe.ingredients?.length || 0} slots</span>
+                        </div>
+                        <div class="item-actions" onclick="event.stopPropagation()">
+                            <button class="icon-btn" onclick="duplicateRecipe(${index})" title="Duplicate">📋</button>
+                            <button class="icon-btn" onclick="deleteRecipe(${index})" title="Delete">🗑️</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Render all pending head icons
+            setTimeout(() => renderAllHeads(), 100);
+        }
+
+        function addNewRecipe() {
+            currentEditingRecipe = null;
+            tempIngredients = [];
+            tempActions = [];
+            tempRules = [];
+            showRecipeEditor({
+                id: '',
+                station: 'OVEN',
+                output: '',
+                processing_time: 100,
+                ingredients: [],
+                actions: [],
+                rules: []
+            });
+        }
+
+        function editRecipe(index) {
+            currentEditingRecipe = index;
+            const recipe = recipes[index];
+            tempIngredients = JSON.parse(JSON.stringify(recipe.ingredients || []));
+            tempActions = JSON.parse(JSON.stringify(recipe.actions || []));
+            tempRules = JSON.parse(JSON.stringify(recipe.rules || []));
+            showRecipeEditor(recipe);
+        }
+
+        function showRecipeEditor(recipe) {
+            document.getElementById('recipe-modal-title').textContent = 
+                currentEditingRecipe === null ? 'Add Recipe' : `Edit: ${recipe.id}`;
+            
+            const itemOptions = customItems.map(item => 
+                `<option value="${item.id}" ${recipe.output === item.id ? 'selected' : ''}>${stripColorCodes(item.name)} (${item.id})</option>`
+            ).join('');
+            
+            document.getElementById('recipe-form').innerHTML = `
+                <div class="form-group">
+                    <label>Recipe ID *</label>
+                    <input type="text" id="recipe-id" value="${recipe.id}" placeholder="e.g., PIZZA" style="text-transform: uppercase;">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Cooking Station *</label>
+                        <select id="recipe-station">
+                            <option value="OVEN" ${recipe.station === 'OVEN' ? 'selected' : ''}>Oven</option>
+                            <option value="BOILING_POT" ${recipe.station === 'BOILING_POT' ? 'selected' : ''}>Boiling Pot</option>
+                            <option value="STOVE" ${recipe.station === 'STOVE' ? 'selected' : ''}>Stove</option>
+                            <option value="FRYING_PAN" ${recipe.station === 'FRYING_PAN' ? 'selected' : ''}>Frying Pan</option>
+                            <option value="GRILL" ${recipe.station === 'GRILL' ? 'selected' : ''}>Grill</option>
+                            <option value="MIXING_BOWL" ${recipe.station === 'MIXING_BOWL' ? 'selected' : ''}>Mixing Bowl</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Processing Time (seconds)</label>
+                        <input type="number" id="recipe-time" value="${recipe.processing_time}" min="0" max="600" step="10">
+                        <p class="help-text">0 = instant (like mixing bowl)</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Output Item *</label>
+                    <select id="recipe-output">
+                        <option value="">Select an item...</option>
+                        ${itemOptions}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Ingredients (<span id="ingredient-count">${tempIngredients.length}</span> slots)</label>
+                    <p class="help-text">Define ingredient slots that players can fill</p>
+                    <div id="ingredients-list"></div>
+                    <button class="btn btn-secondary btn-small" onclick="addIngredientSlot()">+ Add Ingredient Slot</button>
+                </div>
+
+                <div class="form-group">
+                    <label>Actions (<span id="action-count">${tempActions.length}</span>)</label>
+                    <p class="help-text">Default actions applied to the output</p>
+                    <div id="actions-list"></div>
+                    <button class="btn btn-secondary btn-small" onclick="addActionItem()">+ Add Action</button>
+                </div>
+
+                <div class="form-group">
+                    <label>Rules (<span id="rule-count">${tempRules.length}</span>)</label>
+                    <p class="help-text">Conditional rules based on ingredients</p>
+                    <div id="rules-list"></div>
+                    <button class="btn btn-secondary btn-small" onclick="addRuleItem()">+ Add Rule</button>
+                </div>
+            `;
+            
+            renderIngredients();
+            renderActions();
+            renderRules();
+            
+            document.getElementById('recipe-modal').style.display = 'block';
+        }
+
+        function renderIngredients() {
+            const container = document.getElementById('ingredients-list');
+            document.getElementById('ingredient-count').textContent = tempIngredients.length;
+            
+            if (tempIngredients.length === 0) {
+                container.innerHTML = '<p class="help-text">No ingredient slots yet</p>';
+                return;
+            }
+            
+            container.innerHTML = tempIngredients.map((ing, idx) => {
+                const optionsHtml = ing.options.map(opt => {
+                    const itemId = opt.item || opt.custom_item;
+                    let iconHtml = '';
+                    
+                    if (opt.custom_item) {
+                        // Find custom item and show its icon
+                        const customItem = customItems.find(i => i.id === opt.custom_item);
+                        if (customItem && customItem.base_material === 'PLAYER_HEAD' && customItem.texture) {
+                            iconHtml = `<canvas class="pending-head-render" data-texture="${customItem.texture}" width="16" height="16" style="width:16px;height:16px;margin-right:4px;"></canvas>`;
+                        } else if (customItem && customItem.base_material !== 'PLAYER_HEAD') {
+                            iconHtml = `<img src="https://assets.mcasset.cloud/1.20.4/assets/minecraft/textures/item/${customItem.base_material.toLowerCase()}.png" style="width:16px;height:16px;margin-right:4px;image-rendering:pixelated;" onerror="this.style.display='none';">`;
+                        }
+                    } else if (opt.item) {
+                        // Vanilla item icon
+                        iconHtml = `<img src="https://assets.mcasset.cloud/1.20.4/assets/minecraft/textures/item/${opt.item.toLowerCase()}.png" style="width:16px;height:16px;margin-right:4px;image-rendering:pixelated;" onerror="this.style.display='none';">`;
+                    }
+                    
+                    return `<span style="display:inline-flex;align-items:center;margin:2px 4px;">${iconHtml}${itemId}</span>`;
+                }).join('');
+                
+                return `
+                <div class="nested-item">
+                    <div class="nested-header">
+                        <span class="nested-title">Slot ${idx + 1}: ${ing.type} (max: ${ing.max})</span>
+                        <div>
+                            <button class="icon-btn" onclick="editIngredient(${idx})" title="Edit">✏️</button>
+                            <button class="icon-btn" onclick="deleteIngredient(${idx})" title="Delete">🗑️</button>
+                        </div>
+                    </div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
+                        ${ing.options.length} option(s): ${optionsHtml}
+                    </div>
+                </div>
+            `;
+            }).join('');
+            
+            // Render any pending head canvases
+            setTimeout(() => renderAllHeads(), 50);
+        }
+
+        function addIngredientSlot() {
+            tempIngredients.push({
+                type: 'REQUIRED',
+                max: 1,
+                options: []
+            });
+            
+            const idx = tempIngredients.length - 1;
+            editIngredient(idx);
+        }
+        
+        function editIngredient(idx) {
+            showIngredientOptionsEditor(idx);
+        }
+
+        function showIngredientOptionsEditor(idx) {
+            const ing = tempIngredients[idx];
+            const optionsHtml = ing.options.map((opt, optIdx) => {
+                const isCustom = 'custom_item' in opt;
+                const value = isCustom ? opt.custom_item : opt.item;
+                
+                // Get icon for this option
+                let iconHtml = '';
+                if (isCustom) {
+                    const customItem = customItems.find(i => i.id === value);
+                    if (customItem && customItem.base_material === 'PLAYER_HEAD' && customItem.texture) {
+                        iconHtml = `<canvas class="pending-head-render" data-texture="${customItem.texture}" width="24" height="24" style="width:24px;height:24px;margin-right:8px;"></canvas>`;
+                    } else if (customItem && customItem.base_material !== 'PLAYER_HEAD') {
+                        iconHtml = `<img src="https://assets.mcasset.cloud/1.20.4/assets/minecraft/textures/item/${customItem.base_material.toLowerCase()}.png" style="width:24px;height:24px;margin-right:8px;image-rendering:pixelated;" onerror="this.style.display='none';">`;
+                    }
+                } else {
+                    iconHtml = `<img src="https://assets.mcasset.cloud/1.20.4/assets/minecraft/textures/item/${value.toLowerCase()}.png" style="width:24px;height:24px;margin-right:8px;image-rendering:pixelated;" onerror="this.style.display='none';">`;
+                }
+                
+                return `
+                    <div class="ingredient-option" style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--bg-tertiary);border-radius:6px;margin-bottom:8px;">
+                        ${iconHtml}
+                        <select onchange="updateIngredientOption(${idx}, ${optIdx}, this.value, event)" style="width:140px;">
+                            <option value="item" ${!isCustom ? 'selected' : ''}>Vanilla Item</option>
+                            <option value="custom_item" ${isCustom ? 'selected' : ''}>Custom Item</option>
+                        </select>
+                        <input type="text" value="${value}" onchange="updateIngredientOptionValue(${idx}, ${optIdx}, this.value)" 
+                            placeholder="Item ID" style="text-transform: uppercase;flex:1;">
+                        <button class="icon-btn" onclick="deleteIngredientOption(${idx}, ${optIdx})">🗑️</button>
+                    </div>
+                `;
+            }).join('');
+            
+            const customItemOptions = customItems.map(i => i.id).join(', ') || 'None yet';
+            
+            const html = `
+                <div style="background: var(--bg-primary); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <h4>Edit Ingredient Slot ${idx + 1}</h4>
+                    
+                    <div class="form-row" style="margin-bottom: 1rem;">
+                        <div class="form-group">
+                            <label>Type</label>
+                            <select id="ing-type-${idx}" onchange="tempIngredients[${idx}].type = this.value">
+                                <option value="REQUIRED" ${ing.type === 'REQUIRED' ? 'selected' : ''}>Required</option>
+                                <option value="OPTIONAL" ${ing.type === 'OPTIONAL' ? 'selected' : ''}>Optional</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Max Amount</label>
+                            <input type="number" id="ing-max-${idx}" value="${ing.max}" min="1" max="64" 
+                                onchange="tempIngredients[${idx}].max = parseInt(this.value)">
+                        </div>
+                    </div>
+                    
+                    <label>Accepted Items</label>
+                    <p class="help-text" style="margin-bottom: 0.5rem;">
+                        Vanilla items: ${COMMON_VANILLA_ITEMS.slice(0, 10).join(', ')}...<br>
+                        Custom items: ${customItemOptions}
+                    </p>
+                    <div id="options-container-${idx}">
+                        ${optionsHtml || '<p class="help-text">No options yet</p>'}
+                    </div>
+                    <button class="btn btn-secondary btn-small" onclick="addIngredientOption(${idx})">+ Add Option</button>
+                    <button class="btn btn-primary btn-small" onclick="renderIngredients()">Done</button>
+                </div>
+            `;
+            
+            document.getElementById('ingredients-list').innerHTML = html;
+            
+            // Render any head canvases
+            setTimeout(() => renderAllHeads(), 50);
+        }
+
+        function addIngredientOption(idx) {
+            tempIngredients[idx].options.push({ item: '' });
+            showIngredientOptionsEditor(idx);
+        }
+
+        function updateIngredientOption(idx, optIdx, type, event) {
+            const input = event.target.nextElementSibling;
+            const value = input.value;
+            
+            if (type === 'custom_item') {
+                tempIngredients[idx].options[optIdx] = { custom_item: value };
+            } else {
+                tempIngredients[idx].options[optIdx] = { item: value };
+            }
+        }
+
+        function updateIngredientOptionValue(idx, optIdx, value) {
+            const opt = tempIngredients[idx].options[optIdx];
+            if ('custom_item' in opt) {
+                opt.custom_item = value.toUpperCase();
+            } else {
+                opt.item = value.toUpperCase();
+            }
+            showIngredientOptionsEditor(idx); // Refresh to show icon
+        }
+        
+        function renderAllHeads() {
+            document.querySelectorAll('.pending-head-render').forEach(canvas => {
+                const texture = canvas.dataset.texture;
+                if (!texture) return;
+                canvas.classList.remove('pending-head-render');
+                
+                const img = new Image();
+                img.crossOrigin = "Anonymous";
+                img.src = texture;
+                
+                img.onload = () => {
+                    const ctx = canvas.getContext('2d');
+                    ctx.imageSmoothingEnabled = false;
+                    if (img.width === 64 && img.height === 64) {
+                        // Try mc-heads.net first for standard skins
+                        const match = texture.match(/texture\/([a-f0-9]+)/i);
+                        if (match) {
+                            const headImg = new Image();
+                            headImg.crossOrigin = "Anonymous";
+                            headImg.src = `https://mc-heads.net/head/${match[1]}/${canvas.width}`;
+                            headImg.onload = () => {
+                                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                                ctx.drawImage(headImg, 0, 0, canvas.width, canvas.height);
+                            };
+                            headImg.onerror = () => {
+                                // Fallback to 2D render
+                                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                                ctx.drawImage(img, 8, 8, 8, 8, 0, 0, canvas.width, canvas.height);
+                            };
+                        }
+                    } else {
+                        // Non-standard dimensions, render 2D front face
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(img, 8, 8, 8, 8, 0, 0, canvas.width, canvas.height);
+                    }
+                };
+                img.onerror = () => {
+                    const ctx = canvas.getContext('2d');
+                    ctx.font = `${canvas.width * 0.6}px Arial`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText('🍔', canvas.width / 2, canvas.height / 2);
+                };
+            });
+        }
+
+        function deleteIngredientOption(idx, optIdx) {
+            tempIngredients[idx].options.splice(optIdx, 1);
+            showIngredientOptionsEditor(idx);
+        }
+
+        function deleteIngredient(idx) {
+            tempIngredients.splice(idx, 1);
+            renderIngredients();
+        }
+
+        function renderActions() {
+            const container = document.getElementById('actions-list');
+            document.getElementById('action-count').textContent = tempActions.length;
+            
+            if (tempActions.length === 0) {
+                container.innerHTML = '<p class="help-text">No actions yet</p>';
+                return;
+            }
+            
+            container.innerHTML = tempActions.map((action, idx) => {
+                let detailsText = '';
+                if (action.key && action.value !== undefined) {
+                    detailsText = `${action.key}: ${action.value}`;
+                } else if (action.value !== undefined) {
+                    detailsText = `${action.value}`.substring(0, 60) + (action.value.length > 60 ? '...' : '');
+                }
+                
+                return `
+                <div class="nested-item">
+                    <div class="nested-header">
+                        <span class="nested-title">${action.type}</span>
+                        <div>
+                            <button class="icon-btn" onclick="editAction(${idx})" title="Edit">✏️</button>
+                            <button class="icon-btn" onclick="deleteAction(${idx})" title="Delete">🗑️</button>
+                        </div>
+                    </div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
+                        ${detailsText || 'No value set'}
+                    </div>
+                </div>
+            `;
+            }).join('');
+        }
+
+        function addActionItem() {
+            tempActions.push({ 
+                type: 'SET_PROPERTY',
+                key: 'NAME',
+                value: 'New Name'
+            });
+            editAction(tempActions.length - 1);
+        }
+        
+        function editAction(idx) {
+            const action = tempActions[idx];
+            
+            const html = `
+                <div style="background: var(--bg-primary); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <h4>Edit Action ${idx + 1}</h4>
+                    
+                    <div class="form-group">
+                        <label>Action Type</label>
+                        <select id="action-type-${idx}" onchange="updateActionType(${idx}, this.value)">
+                            <option value="SET_PROPERTY" ${action.type === 'SET_PROPERTY' ? 'selected' : ''}>Set Property</option>
+                            <option value="SET_TEXTURE" ${action.type === 'SET_TEXTURE' ? 'selected' : ''}>Set Texture</option>
+                            <option value="SET_QUALITY" ${action.type === 'SET_QUALITY' ? 'selected' : ''}>Set Quality</option>
+                            <option value="ADD_QUALITY" ${action.type === 'ADD_QUALITY' ? 'selected' : ''}>Add Quality</option>
+                            <option value="PREPEND_NAME" ${action.type === 'PREPEND_NAME' ? 'selected' : ''}>Prepend Name</option>
+                            <option value="APPEND_NAME" ${action.type === 'APPEND_NAME' ? 'selected' : ''}>Append Name</option>
+                            <option value="SET_RETURN_ITEM" ${action.type === 'SET_RETURN_ITEM' ? 'selected' : ''}>Set Return Item</option>
+                            <option value="SET_CONSUME_RETURN" ${action.type === 'SET_CONSUME_RETURN' ? 'selected' : ''}>Set Consume Return</option>
+                            <option value="ADD_METADATA" ${action.type === 'ADD_METADATA' ? 'selected' : ''}>Add Metadata</option>
+                            <option value="SET_METADATA" ${action.type === 'SET_METADATA' ? 'selected' : ''}>Set Metadata</option>
+                            <option value="ADD_CONTAINS" ${action.type === 'ADD_CONTAINS' ? 'selected' : ''}>Add Contains</option>
+                        </select>
+                    </div>
+                    
+                    <div id="action-params-${idx}">
+                        ${getActionParametersHTML(action, idx)}
+                    </div>
+                    
+                    <button class="btn btn-primary btn-small" onclick="renderActions()">Done</button>
+                </div>
+            `;
+            
+            document.getElementById('actions-list').innerHTML = html;
+        }
+        
+        function getActionParametersHTML(action, idx) {
+            const type = action.type;
+            
+            // Actions with key + value
+            if (['SET_PROPERTY', 'ADD_METADATA', 'SET_METADATA', 'ADD_CONTAINS'].includes(type)) {
+                const keyOptions = type === 'SET_PROPERTY' 
+                    ? ['NAME', 'QUALITY', 'SATURATION', 'FOOD_VALUE', 'CUSTOM']
+                    : ['CUSTOM'];
+                    
+                return `
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Key</label>
+                            <select id="action-key-${idx}" onchange="updateActionKey(${idx}, this.value)">
+                                ${keyOptions.map(k => `<option value="${k}" ${action.key === k ? 'selected' : ''}>${k}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Value</label>
+                            <input type="text" value="${action.value || ''}" 
+                                onchange="tempActions[${idx}].value = this.value"
+                                placeholder="Enter value">
+                        </div>
+                    </div>
+                    <p class="help-text">
+                        ${type === 'SET_PROPERTY' ? 'Set a property like NAME (display name), QUALITY, etc.' : ''}
+                        ${type === 'ADD_METADATA' ? 'Add metadata to the output item' : ''}
+                        ${type === 'SET_METADATA' ? 'Set/replace metadata on the output item' : ''}
+                        ${type === 'ADD_CONTAINS' ? 'Add an ingredient to the "contains" list' : ''}
+                    </p>
+                `;
+            }
+            
+            // Actions with just value
+            if (['SET_TEXTURE', 'SET_QUALITY', 'ADD_QUALITY', 'PREPEND_NAME', 'APPEND_NAME', 'SET_RETURN_ITEM', 'SET_CONSUME_RETURN'].includes(type)) {
+                let placeholder = 'Enter value';
+                let helpText = '';
+                
+                if (type === 'SET_TEXTURE') {
+                    placeholder = 'http://textures.minecraft.net/texture/...';
+                    helpText = 'Set the player head texture URL for the output item';
+                } else if (type === 'SET_QUALITY' || type === 'ADD_QUALITY') {
+                    placeholder = '0.5';
+                    helpText = type === 'SET_QUALITY' ? 'Set the quality value (0.0 to 1.0)' : 'Add to the quality value (can be negative)';
+                } else if (type === 'PREPEND_NAME' || type === 'APPEND_NAME') {
+                    placeholder = '§6Delicious ';
+                    helpText = `${type === 'PREPEND_NAME' ? 'Add text before' : 'Add text after'} the item name. Use § for colors.`;
+                } else if (type === 'SET_RETURN_ITEM' || type === 'SET_CONSUME_RETURN') {
+                    placeholder = 'GLASS_BOTTLE';
+                    helpText = type === 'SET_RETURN_ITEM' ? 'Item returned when recipe completes' : 'Item returned when food is consumed';
+                }
+                
+                return `
+                    <div class="form-group">
+                        <label>Value</label>
+                        <input type="text" value="${action.value || ''}" 
+                            onchange="tempActions[${idx}].value = this.value"
+                            placeholder="${placeholder}"
+                            ${type === 'SET_TEXTURE' ? 'style="font-size: 0.85rem;"' : ''}>
+                    </div>
+                    <p class="help-text">${helpText}</p>
+                `;
+            }
+            
+            return '<p class="help-text">Unknown action type</p>';
+        }
+        
+        function updateActionType(idx, newType) {
+            const oldAction = tempActions[idx];
+            
+            // Preserve value if possible, reset key for key-based actions
+            if (['SET_PROPERTY', 'ADD_METADATA', 'SET_METADATA', 'ADD_CONTAINS'].includes(newType)) {
+                tempActions[idx] = { 
+                    type: newType, 
+                    key: oldAction.key || 'NAME', 
+                    value: oldAction.value || '' 
+                };
+            } else {
+                tempActions[idx] = { 
+                    type: newType, 
+                    value: oldAction.value || '' 
+                };
+            }
+            
+            editAction(idx);
+        }
+        
+        function updateActionKey(idx, key) {
+            tempActions[idx].key = key;
+        }
+
+        function deleteAction(idx) {
+            tempActions.splice(idx, 1);
+            renderActions();
+        }
+
+        function renderRules() {
+            const container = document.getElementById('rules-list');
+            document.getElementById('rule-count').textContent = tempRules.length;
+            
+            if (tempRules.length === 0) {
+                container.innerHTML = '<p class="help-text">No rules yet</p>';
+                return;
+            }
+            
+            container.innerHTML = tempRules.map((rule, idx) => {
+                let detailsText = `${rule.actions?.length || 0} action(s)`;
+                
+                // Add details about the rule trigger
+                if (rule.item || rule.custom_item) {
+                    const itemId = rule.item || rule.custom_item;
+                    detailsText = `Item: ${itemId}, ${detailsText}`;
+                } else if (rule.count) {
+                    detailsText = `Count: ${rule.count}, ${detailsText}`;
+                } else if (rule.property) {
+                    detailsText = `Property: ${rule.property}, ${detailsText}`;
+                }
+                
+                return `
+                <div class="nested-item">
+                    <div class="nested-header">
+                        <span class="nested-title">${rule.trigger}</span>
+                        <div>
+                            <button class="icon-btn" onclick="editRule(${idx})" title="Edit">✏️</button>
+                            <button class="icon-btn" onclick="deleteRule(${idx})" title="Delete">🗑️</button>
+                        </div>
+                    </div>
+                    <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.5rem;">
+                        ${detailsText}
+                    </div>
+                </div>
+            `;
+            }).join('');
+        }
+
+        function addRuleItem() {
+            tempRules.push({ 
+                trigger: 'HAS_INPUT',
+                item: 'WHEAT',
+                actions: []
+            });
+            editRule(tempRules.length - 1);
+        }
+        
+        function editRule(idx) {
+            const rule = tempRules[idx];
+            const actionsHtml = (rule.actions || []).map((action, actIdx) => {
+                return `
+                    <div style="display:flex;align-items:center;gap:8px;padding:8px;background:var(--bg-tertiary);border-radius:6px;margin-bottom:8px;">
+                        <input type="text" value="${action.type || ''}" placeholder="Action type" 
+                            onchange="tempRules[${idx}].actions[${actIdx}].type = this.value.toUpperCase()" 
+                            style="text-transform:uppercase;width:200px;">
+                        <input type="text" value="${action.value || ''}" placeholder="Value" 
+                            onchange="tempRules[${idx}].actions[${actIdx}].value = this.value"
+                            style="flex:1;">
+                        <button class="icon-btn" onclick="tempRules[${idx}].actions.splice(${actIdx}, 1); editRule(${idx})">🗑️</button>
+                    </div>
+                `;
+            }).join('');
+            
+            const html = `
+                <div style="background: var(--bg-primary); padding: 1rem; border-radius: 8px; margin: 1rem 0;">
+                    <h4>Edit Rule ${idx + 1}</h4>
+                    
+                    <div class="form-group">
+                        <label>Trigger Type</label>
+                        <select id="rule-trigger-${idx}" onchange="updateRuleTrigger(${idx}, this.value)">
+                            <option value="HAS_INPUT" ${rule.trigger === 'HAS_INPUT' ? 'selected' : ''}>Has Input</option>
+                            <option value="HAS_ANY_INGREDIENT" ${rule.trigger === 'HAS_ANY_INGREDIENT' ? 'selected' : ''}>Has Any Ingredient</option>
+                            <option value="HAS_ALL_INGREDIENTS" ${rule.trigger === 'HAS_ALL_INGREDIENTS' ? 'selected' : ''}>Has All Ingredients</option>
+                            <option value="INPUT_COUNT_GTE" ${rule.trigger === 'INPUT_COUNT_GTE' ? 'selected' : ''}>Input Count ≥</option>
+                            <option value="HAS_INGREDIENT_PROPERTY" ${rule.trigger === 'HAS_INGREDIENT_PROPERTY' ? 'selected' : ''}>Has Ingredient Property</option>
+                        </select>
+                    </div>
+                    
+                    <div id="rule-params-${idx}">
+                        ${getRuleParametersHTML(rule, idx)}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Actions</label>
+                        <div id="rule-actions-${idx}">
+                            ${actionsHtml || '<p class="help-text">No actions yet</p>'}
+                        </div>
+                        <button class="btn btn-secondary btn-small" onclick="addRuleAction(${idx})">+ Add Action</button>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-small" onclick="renderRules()">Done</button>
+                </div>
+            `;
+            
+            document.getElementById('rules-list').innerHTML = html;
+        }
+        
+        function getRuleParametersHTML(rule, idx) {
+            if (rule.trigger === 'HAS_INPUT') {
+                return `
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Item Type</label>
+                            <select id="rule-itemtype-${idx}" onchange="updateRuleItemType(${idx}, this.value)">
+                                <option value="item" ${rule.item ? 'selected' : ''}>Vanilla Item</option>
+                                <option value="custom_item" ${rule.custom_item ? 'selected' : ''}>Custom Item</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Item ID</label>
+                            <input type="text" value="${rule.item || rule.custom_item || ''}" 
+                                onchange="updateRuleItemId(${idx}, this.value)"
+                                style="text-transform:uppercase;" placeholder="e.g., WHEAT">
+                        </div>
+                    </div>
+                `;
+            } else if (rule.trigger === 'INPUT_COUNT_GTE') {
+                return `
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Slot Index</label>
+                            <input type="number" value="${rule.slot_index || 0}" min="0"
+                                onchange="tempRules[${idx}].slot_index = parseInt(this.value)">
+                        </div>
+                        <div class="form-group">
+                            <label>Minimum Count</label>
+                            <input type="number" value="${rule.count || 1}" min="1"
+                                onchange="tempRules[${idx}].count = parseInt(this.value)">
+                        </div>
+                    </div>
+                `;
+            } else if (rule.trigger === 'HAS_INGREDIENT_PROPERTY') {
+                return `
+                    <div class="form-group">
+                        <label>Property Name</label>
+                        <input type="text" value="${rule.property || ''}" placeholder="e.g., VEGAN"
+                            onchange="tempRules[${idx}].property = this.value.toUpperCase()"
+                            style="text-transform:uppercase;">
+                    </div>
+                `;
+            }
+            return '<p class="help-text">No parameters for this trigger</p>';
+        }
+        
+        function updateRuleTrigger(idx, trigger) {
+            tempRules[idx].trigger = trigger;
+            // Clear old parameters
+            delete tempRules[idx].item;
+            delete tempRules[idx].custom_item;
+            delete tempRules[idx].slot_index;
+            delete tempRules[idx].count;
+            delete tempRules[idx].property;
+            editRule(idx);
+        }
+        
+        function updateRuleItemType(idx, type) {
+            const currentId = tempRules[idx].item || tempRules[idx].custom_item || '';
+            delete tempRules[idx].item;
+            delete tempRules[idx].custom_item;
+            if (type === 'item') {
+                tempRules[idx].item = currentId;
+            } else {
+                tempRules[idx].custom_item = currentId;
+            }
+        }
+        
+        function updateRuleItemId(idx, value) {
+            if (tempRules[idx].item !== undefined) {
+                tempRules[idx].item = value.toUpperCase();
+            } else {
+                tempRules[idx].custom_item = value.toUpperCase();
+            }
+        }
+        
+        function addRuleAction(idx) {
+            if (!tempRules[idx].actions) {
+                tempRules[idx].actions = [];
+            }
+            tempRules[idx].actions.push({ type: 'ADD_LORE', value: 'New lore line' });
+            editRule(idx);
+        }
+
+        function deleteRule(idx) {
+            tempRules.splice(idx, 1);
+            renderRules();
+        }
+
+        function saveRecipe() {
+            const recipe = {
+                id: document.getElementById('recipe-id').value.toUpperCase().trim(),
+                station: document.getElementById('recipe-station').value,
+                output: document.getElementById('recipe-output').value,
+                processing_time: parseInt(document.getElementById('recipe-time').value),
+                ingredients: tempIngredients,
+                actions: tempActions,
+                rules: tempRules
+            };
+
+            if (!recipe.id || !recipe.output) {
+                alert('Please fill in ID and output item');
+                return;
+            }
+
+            if (currentEditingRecipe === null) {
+                recipes.push(recipe);
+            } else {
+                recipes[currentEditingRecipe] = recipe;
+            }
+
+            closeRecipeModal();
+            renderRecipes();
+            updateExport();
+            updateCounts();
+        }
+
+        function duplicateRecipe(index) {
+            const recipe = JSON.parse(JSON.stringify(recipes[index]));
+            recipe.id = recipe.id + '_COPY';
+            recipes.push(recipe);
+            renderRecipes();
+            updateExport();
+            updateCounts();
+        }
+
+        function deleteRecipe(index) {
+            if (confirm(`Delete ${recipes[index].id}?`)) {
+                recipes.splice(index, 1);
+                renderRecipes();
+                updateExport();
+                updateCounts();
+            }
+        }
+
+        function closeRecipeModal() {
+            document.getElementById('recipe-modal').style.display = 'none';
+        }
+
+        // IMPORT/EXPORT
+        function importItemsJSON() {
+            if (confirm('Import items from:\nOK = Upload File\nCancel = Paste JSON')) {
+                // File upload
+                const input = document.getElementById('file-input');
+                input.onchange = (e) => {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        try {
+                            const data = JSON.parse(event.target.result);
+                            customItems = data.custom_items || [];
+                            renderItems();
+                            updateExport();
+                            updateCounts();
+                            alert(`Imported ${customItems.length} items successfully!`);
+                        } catch (error) {
+                            alert('Error importing JSON: ' + error.message);
+                        }
+                    };
+                    reader.readAsText(file);
+                };
+                input.click();
+            } else {
+                // Paste JSON
+                pasteMode = 'items';
+                document.getElementById('paste-modal-title').textContent = 'Paste Items JSON';
+                document.getElementById('paste-json-textarea').value = '';
+                document.getElementById('paste-json-textarea').placeholder = '{"custom_items": [...]}';
+                document.getElementById('paste-modal').style.display = 'block';
+            }
+        }
+
+        function importRecipesJSON() {
+            if (confirm('Import recipes from:\nOK = Upload File\nCancel = Paste JSON')) {
+                // File upload
+                const input = document.getElementById('file-input');
+                input.onchange = (e) => {
+                    const file = e.target.files[0];
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        try {
+                            const data = JSON.parse(event.target.result);
+                            recipes = data.recipes || [];
+                            renderRecipes();
+                            updateExport();
+                            updateCounts();
+                            alert(`Imported ${recipes.length} recipes successfully!`);
+                        } catch (error) {
+                            alert('Error importing JSON: ' + error.message);
+                        }
+                    };
+                    reader.readAsText(file);
+                };
+                input.click();
+            } else {
+                // Paste JSON
+                pasteMode = 'recipes';
+                document.getElementById('paste-modal-title').textContent = 'Paste Recipes JSON';
+                document.getElementById('paste-json-textarea').value = '';
+                document.getElementById('paste-json-textarea').placeholder = '{"recipes": [...]}';
+                document.getElementById('paste-modal').style.display = 'block';
+            }
+        }
+
+        function importFromPaste() {
+            try {
+                const jsonText = document.getElementById('paste-json-textarea').value;
+                const data = JSON.parse(jsonText);
+                
+                if (pasteMode === 'items') {
+                    customItems = data.custom_items || [];
+                    renderItems();
+                    alert(`Imported ${customItems.length} items successfully!`);
+                } else {
+                    recipes = data.recipes || [];
+                    renderRecipes();
+                    alert(`Imported ${recipes.length} recipes successfully!`);
+                }
+                
+                updateExport();
+                updateCounts();
+                closePasteModal();
+            } catch (error) {
+                alert('Error parsing JSON: ' + error.message);
+            }
+        }
+
+        function closePasteModal() {
+            document.getElementById('paste-modal').style.display = 'none';
+        }
+
+        function updateExport() {
+            document.getElementById('items-json-output').textContent = 
+                JSON.stringify({ custom_items: customItems }, null, 2);
+            document.getElementById('recipes-json-output').textContent = 
+                JSON.stringify({ recipes: recipes }, null, 2);
+        }
+
+        function copyItemsJSON() {
+            const json = JSON.stringify({ custom_items: customItems }, null, 2);
+            navigator.clipboard.writeText(json).then(() => {
+                alert('Items JSON copied to clipboard!');
+            });
+        }
+
+        function downloadItemsJSON() {
+            const json = JSON.stringify({ custom_items: customItems }, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'custom_items.json';
+            a.click();
+        }
+
+        function copyRecipesJSON() {
+            const json = JSON.stringify({ recipes: recipes }, null, 2);
+            navigator.clipboard.writeText(json).then(() => {
+                alert('Recipes JSON copied to clipboard!');
+            });
+        }
+
+        function downloadRecipesJSON() {
+            const json = JSON.stringify({ recipes: recipes }, null, 2);
+            const blob = new Blob([json], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'recipes.json';
+            a.click();
+        }
+
+        // UTILITIES
+        function stripColorCodes(text) {
+            return text.replace(/§[0-9a-fk-or]/gi, '');
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        // Initialize on load
+        init();
+    </script>
+</body>
+</html>
