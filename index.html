@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heirloom Studio — Configuration Suite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-cream: #F9F7F2;
+            --bg-cream-dark: #EDE9E0;
+            --sage-green: #556B2F;
+            --sage-green-light: #6B8E23;
+            --sage-green-dark: #3D4F22;
+            --text-dark: #2C2C2C;
+            --text-muted: #5C5C5C;
+            --text-light: #8A8A8A;
+            --accent-gold: #B8860B;
+            --card-bg: #FFFFFF;
+            --shadow-soft: 0 4px 20px rgba(85, 107, 47, 0.08);
+            --shadow-hover: 0 8px 32px rgba(85, 107, 47, 0.15);
+            --border-subtle: rgba(85, 107, 47, 0.12);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Source Sans 3', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-cream);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Subtle parchment pattern overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(ellipse at 20% 30%, rgba(85, 107, 47, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(184, 134, 11, 0.03) 0%, transparent 50%),
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Decorative wheat/leaf motif */
+        .bg-decor {
+            position: fixed;
+            font-size: 120px;
+            opacity: 0.04;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .bg-decor.top-left {
+            top: -20px;
+            left: -30px;
+            transform: rotate(-15deg);
+        }
+
+        .bg-decor.bottom-right {
+            bottom: -20px;
+            right: -30px;
+            transform: rotate(15deg);
+        }
+
+        main {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+            padding: 60px 24px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .header-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            display: block;
+            animation: gentle-bob 3s ease-in-out infinite;
+        }
+
+        @keyframes gentle-bob {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: clamp(2.5rem, 6vw, 3.5rem);
+            font-weight: 600;
+            color: var(--sage-green);
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .header .subtitle {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+        }
+
+        .header-divider {
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--sage-green), transparent);
+            margin: 24px auto 0;
+            border-radius: 1px;
+        }
+
+        /* Cards Grid */
+        .cards-container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        @media (max-width: 900px) {
+            .cards-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            main {
+                padding: 40px 20px;
+            }
+
+            .header {
+                margin-bottom: 40px;
+            }
+        }
+
+        /* Card */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 36px 28px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border-subtle);
+            transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--sage-green-light), var(--sage-green), var(--sage-green-light));
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(85, 107, 47, 0.25);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card-icon {
+            font-size: 56px;
+            margin-bottom: 20px;
+            display: block;
+            transition: transform 0.35s ease;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.1);
+        }
+
+        .card h2 {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--sage-green-dark);
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 24px;
+            flex-grow: 1;
+        }
+
+        .card-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            background: var(--sage-green);
+            color: #fff;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+            border: 2px solid var(--sage-green);
+        }
+
+        .card-btn:hover {
+            background: var(--sage-green-dark);
+            border-color: var(--sage-green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(85, 107, 47, 0.3);
+        }
+
+        .card-btn svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.25s ease;
+        }
+
+        .card-btn:hover svg {
+            transform: translateX(3px);
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 32px 24px;
+            border-top: 1px solid var(--border-subtle);
+            background: linear-gradient(180deg, transparent, rgba(85, 107, 47, 0.03));
+        }
+
+        footer p {
+            font-size: 0.85rem;
+            color: var(--text-light);
+            letter-spacing: 0.02em;
+        }
+
+        footer .heart {
+            color: var(--accent-gold);
+            display: inline-block;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        /* Smooth page load animation */
+        @keyframes fade-up {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            animation: fade-up 0.6s ease-out;
+        }
+
+        .card:nth-child(1) {
+            animation: fade-up 0.6s ease-out 0.1s both;
+        }
+
+        .card:nth-child(2) {
+            animation: fade-up 0.6s ease-out 0.2s both;
+        }
+
+        .card:nth-child(3) {
+            animation: fade-up 0.6s ease-out 0.3s both;
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative background elements -->
+    <div class="bg-decor top-left">🌾</div>
+    <div class="bg-decor bottom-right">🍃</div>
+
+    <main>
+        <header class="header">
+            <span class="header-icon">🏡</span>
+            <h1>Heirloom Studio</h1>
+            <p class="subtitle">Configuration Suite</p>
+            <div class="header-divider"></div>
+        </header>
+
+        <div class="cards-container">
+            <div class="cards-grid">
+                <!-- Recipe Studio Card -->
+                <article class="card">
+                    <span class="card-icon">🥘</span>
+                    <h2>Recipe Studio</h2>
+                    <p>Create custom recipes with visual ingredient slots, cooking requirements, and beautiful output previews.</p>
+                    <a href="food-generator.html" class="card-btn">
+                        Launch Tool
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </article>
+
+                <!-- Dietary Config Card -->
+                <article class="card">
+                    <span class="card-icon">🥗</span>
+                    <h2>Dietary Config</h2>
+                    <p>Define dietary properties, nutritional categories, and food attribute tags for your custom items.</p>
+                    <a href="dietary-generator.html" class="card-btn">
+                        Launch Tool
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </article>
+
+                <!-- Custom Crop Creator Card -->
+                <article class="card">
+                    <span class="card-icon">🌱</span>
+                    <h2>Crop Creator</h2>
+                    <p>Design custom crops with growth stages, harvest mechanics, and unique planting requirements.</p>
+                    <a href="crops-generator.html" class="card-btn">
+                        Launch Tool
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </a>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Created with <span class="heart">♥</span> by Kernel</p>
+    </footer>
+</body>
+</html>
+
